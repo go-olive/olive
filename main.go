@@ -16,6 +16,8 @@ import (
 var done = make(chan struct{})
 
 func main() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
 	s, err := engine.NewShow("huya", "92852")
 	if err != nil {
 		println(err)

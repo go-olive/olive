@@ -26,8 +26,9 @@ type Show interface {
 	GetRoomID() string
 	StreamURL() (string, error)
 	Snapshot() (*platform.Snapshot, error)
-	AddMonitor() error
 
+	AddMonitor() error
+	RemoveMonitor() error
 	AddRecorder() error
 	RemoveRecorder() error
 
@@ -97,6 +98,15 @@ func (s *show) AddMonitor() error {
 		return errors.New("internal error")
 	}
 	e := dispatcher.NewEvent(enum.EventType.AddMonitor, s)
+	return d.Dispatch(e)
+}
+
+func (s *show) RemoveMonitor() error {
+	d, ok := dispatcher.SharedManager.Dispatcher(enum.DispatcherType.Monitor)
+	if !ok {
+		return errors.New("internal error")
+	}
+	e := dispatcher.NewEvent(enum.EventType.RemoveMonitor, s)
 	return d.Dispatch(e)
 }
 

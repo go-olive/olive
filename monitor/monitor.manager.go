@@ -38,3 +38,16 @@ func (m *Manager) addMonitor(show engine.Show) error {
 	m.savers[show.GetID()] = monitor
 	return monitor.Start()
 }
+
+func (m *Manager) removeMonitor(show engine.Show) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	monitor, ok := m.savers[show.GetID()]
+	if !ok {
+		return errors.New("not exist")
+	}
+	monitor.Stop()
+	delete(m.savers, show.GetID())
+	return nil
+}

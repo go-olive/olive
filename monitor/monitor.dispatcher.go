@@ -19,6 +19,8 @@ func (m *Manager) Dispatch(event *dispatcher.Event) error {
 	switch event.Type {
 	case enum.EventType.AddMonitor:
 		return m.addMonitor(show)
+	case enum.EventType.RemoveMonitor:
+		return m.removeMonitor(show)
 	}
 	return nil
 }

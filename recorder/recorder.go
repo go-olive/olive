@@ -53,7 +53,7 @@ func (r *recorder) Stop() {
 	}
 	close(r.stop)
 	r.parser.Stop()
-	r.show.RemoveRecorder()
+	go r.show.RemoveRecorder()
 }
 
 func (r *recorder) StartTime() time.Time {

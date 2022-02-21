@@ -46,8 +46,8 @@ func (m *monitor) Stop() {
 	if !atomic.CompareAndSwapUint32(&m.status, enum.Status.Running, enum.Status.Stopping) {
 		return
 	}
-	m.show.RemoveRecorder()
 	close(m.stop)
+	go m.show.RemoveMonitor()
 }
 
 func (m *monitor) refresh() {
