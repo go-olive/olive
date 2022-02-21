@@ -22,7 +22,6 @@ func init() {
 type ffmpeg struct {
 	cmd       *exec.Cmd
 	cmdStdIn  io.WriteCloser
-	cmdStdout io.ReadCloser
 	closeOnce *sync.Once
 }
 
@@ -62,9 +61,6 @@ func (p *ffmpeg) Parse(streamURL string, out string) (err error) {
 		out,
 	)
 	if p.cmdStdIn, err = p.cmd.StdinPipe(); err != nil {
-		return err
-	}
-	if p.cmdStdout, err = p.cmd.StdoutPipe(); err != nil {
 		return err
 	}
 	if err = p.cmd.Start(); err != nil {
