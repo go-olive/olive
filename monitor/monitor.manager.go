@@ -19,11 +19,8 @@ func NewManager() *Manager {
 }
 
 func (m *Manager) Stop() {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	for id, monitor := range m.savers {
+	for _, monitor := range m.savers {
 		monitor.Stop()
-		delete(m.savers, id)
 	}
 }
 

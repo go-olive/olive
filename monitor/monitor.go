@@ -47,7 +47,7 @@ func (m *monitor) Stop() {
 		return
 	}
 	close(m.stop)
-	go m.show.RemoveMonitor()
+	m.show.RemoveMonitor()
 }
 
 func (m *monitor) refresh() {
