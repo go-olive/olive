@@ -20,22 +20,22 @@ func init() {
 }
 
 type ffmpeg struct {
-	cmd       *exec.Cmd
-	cmdStdIn  io.WriteCloser
+	cmd      *exec.Cmd
+	cmdStdIn io.WriteCloser
+
 	closeOnce *sync.Once
+	stop      chan struct{}
 }
 
 func (p *ffmpeg) New() parser.Parser {
 	return &ffmpeg{
-		closeOnce: new(sync.Once),
+		stop: make(chan struct{}),
 	}
 }
 
 func (p *ffmpeg) Stop() {
 	p.closeOnce.Do(func() {
-		if p.cmd.ProcessState == nil {
-			p.cmdStdIn.Write([]byte("q"))
-		}
+		close(p.stop)
 	})
 }
 
@@ -67,5 +67,9 @@ func (p *ffmpeg) Parse(streamURL string, out string) (err error) {
 		p.cmd.Process.Kill()
 		return err
 	}
+	go func() {
+		<-p.stop
+		p.cmdStdIn.Write([]byte("q"))
+	}()
 	return p.cmd.Wait()
 }
