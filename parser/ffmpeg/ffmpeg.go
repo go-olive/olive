@@ -23,7 +23,7 @@ type ffmpeg struct {
 	cmd      *exec.Cmd
 	cmdStdIn io.WriteCloser
 
-	closeOnce *sync.Once
+	closeOnce sync.Once
 	stop      chan struct{}
 }
 
