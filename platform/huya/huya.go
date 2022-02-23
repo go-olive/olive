@@ -3,6 +3,7 @@ package huya
 import (
 	"crypto/md5"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -44,7 +45,11 @@ func (c *huyaCtrl) StreamURL(roomID string) (string, error) {
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("User-Agent", userAgent)
-	resp, _ := http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
 	content, _ := ioutil.ReadAll(resp.Body)
 	respBody := string(content)
 	re := regexp.MustCompile(`liveLineUrl":"([^"]+)",`)
@@ -52,6 +57,9 @@ func (c *huyaCtrl) StreamURL(roomID string) (string, error) {
 	res := make([]string, 0)
 	for _, v := range submatch {
 		res = append(res, string(v[1]))
+	}
+	if len(res) < 1 {
+		return "", errors.New("find stream url failed")
 	}
 	a, _ := base64.RawStdEncoding.DecodeString(res[0])
 	return c.proc(string(a)), nil
@@ -99,7 +107,11 @@ func (c *huyaCtrl) Snapshot(roomID string) (*platform.Snapshot, error) {
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("User-Agent", webUserAgent)
-	resp, _ := http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
 	content, _ := ioutil.ReadAll(resp.Body)
 	roomOn := strings.Contains(string(content), `"isOn":true`)
 	return &platform.Snapshot{

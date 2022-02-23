@@ -64,6 +64,7 @@ func (r *recorder) record() {
 	u, err := r.show.StreamURL()
 	if err != nil {
 		log.Println(err)
+		time.Sleep(5 * time.Second)
 		return
 	}
 	t := time.Now().Format("[2006-01-02 15-04-05].flv")
