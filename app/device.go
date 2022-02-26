@@ -36,6 +36,14 @@ func (d *device) Run() {
 		return
 	}
 	s.AddMonitor()
+
+	s2, err := engine.NewShow("youtube", "UCwV9VXgUFpCKbf8SUsE6OSw")
+	if err != nil {
+		println(err)
+		return
+	}
+	s2.AddMonitor()
+
 	go d.listenSignal()
 	<-d.done
 }
