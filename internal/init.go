@@ -2,6 +2,7 @@ package internal
 
 import (
 	_ "github.com/luxcgo/lifesaver/platform/huya"
+	_ "github.com/luxcgo/lifesaver/platform/youtube"
 
 	_ "github.com/luxcgo/lifesaver/monitor"
 
