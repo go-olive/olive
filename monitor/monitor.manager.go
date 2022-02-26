@@ -21,6 +21,7 @@ func NewManager() *Manager {
 func (m *Manager) Stop() {
 	for _, monitor := range m.savers {
 		monitor.Stop()
+		<-monitor.Done()
 	}
 }
 

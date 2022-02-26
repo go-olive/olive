@@ -14,6 +14,7 @@ import (
 type Monitor interface {
 	Start() error
 	Stop()
+	Done() <-chan struct{}
 }
 
 func NewMonitor(show engine.Show) Monitor {
@@ -22,6 +23,7 @@ func NewMonitor(show engine.Show) Monitor {
 		show:     show,
 		stop:     make(chan struct{}),
 		snapshot: &platform.Snapshot{},
+		done:     make(chan struct{}),
 	}
 }
 
@@ -30,6 +32,7 @@ type monitor struct {
 	show     engine.Show
 	stop     chan struct{}
 	snapshot *platform.Snapshot
+	done     chan struct{}
 }
 
 func (m *monitor) Start() error {
@@ -38,6 +41,7 @@ func (m *monitor) Start() error {
 	}
 	defer atomic.CompareAndSwapUint32(&m.status, enum.Status.Pending, enum.Status.Running)
 	m.refresh()
+
 	go m.run()
 	return nil
 }
@@ -85,9 +89,14 @@ func (m *monitor) run() {
 	for {
 		select {
 		case <-m.stop:
+			close(m.done)
 			return
 		case <-t.C:
 			m.refresh()
 		}
 	}
+}
+
+func (m *monitor) Done() <-chan struct{} {
+	return m.done
 }

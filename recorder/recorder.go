@@ -14,6 +14,7 @@ type Recorder interface {
 	Start() error
 	Stop()
 	StartTime() time.Time
+	Done() <-chan struct{}
 }
 
 type recorder struct {
@@ -22,6 +23,7 @@ type recorder struct {
 	stop      chan struct{}
 	startTime time.Time
 	parser    parser.Parser
+	done      chan struct{}
 }
 
 func NewRecorder(show engine.Show) (Recorder, error) {
@@ -35,6 +37,7 @@ func NewRecorder(show engine.Show) (Recorder, error) {
 		stop:      make(chan struct{}),
 		startTime: time.Now(),
 		parser:    parser,
+		done:      make(chan struct{}),
 	}, nil
 }
 
@@ -76,9 +79,14 @@ func (r *recorder) run() {
 	for {
 		select {
 		case <-r.stop:
+			close(r.done)
 			return
 		default:
 			r.record()
 		}
 	}
+}
+
+func (r *recorder) Done() <-chan struct{} {
+	return r.done
 }
