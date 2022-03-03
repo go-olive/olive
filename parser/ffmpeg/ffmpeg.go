@@ -2,7 +2,6 @@ package ffmpeg
 
 import (
 	"io"
-	"log"
 	"os/exec"
 	"sync"
 
@@ -44,8 +43,7 @@ func (p *ffmpeg) Type() string {
 }
 
 func (p *ffmpeg) Parse(streamURL string, out string) (err error) {
-	log.Println(streamURL)
-	log.Println("work")
+	// log.Println(streamURL)
 	p.cmd = exec.Command(
 		"ffmpeg",
 		"-nostats",

@@ -1,13 +1,14 @@
 package recorder
 
 import (
-	"log"
 	"sync/atomic"
 	"time"
 
 	"github.com/luxcgo/lifesaver/engine"
 	"github.com/luxcgo/lifesaver/enum"
+	l "github.com/luxcgo/lifesaver/log"
 	"github.com/luxcgo/lifesaver/parser"
+	"github.com/sirupsen/logrus"
 )
 
 type Recorder interface {
@@ -47,6 +48,12 @@ func (r *recorder) Start() error {
 	}
 	defer atomic.CompareAndSwapUint32(&r.status, enum.Status.Pending, enum.Status.Running)
 	go r.run()
+
+	l.Logger.WithFields(logrus.Fields{
+		"pf": r.show.GetPlatform(),
+		"id": r.show.GetRoomID(),
+	}).Info("recorder start")
+
 	return nil
 }
 
@@ -56,7 +63,8 @@ func (r *recorder) Stop() {
 	}
 	close(r.stop)
 	r.parser.Stop()
-	r.show.RemoveRecorder()
+	// // bug
+	// r.show.RemoveRecorder()
 }
 
 func (r *recorder) StartTime() time.Time {
@@ -66,20 +74,40 @@ func (r *recorder) StartTime() time.Time {
 func (r *recorder) record() {
 	u, err := r.show.StreamURL()
 	if err != nil {
-		log.Println(err)
+		l.Logger.Error(err)
 		time.Sleep(5 * time.Second)
 		return
 	}
 	t := time.Now().Format("[2006-01-02 15-04-05].flv")
-	r.parser.Parse(u, t)
+	err = r.parser.Parse(u, t)
+
+	l.Logger.WithFields(logrus.Fields{
+		"pf": r.show.GetPlatform(),
+		"id": r.show.GetRoomID(),
+	}).Info("record start")
+
+	if err != nil {
+		l.Logger.WithFields(logrus.Fields{
+			"pf": r.show.GetPlatform(),
+			"id": r.show.GetRoomID(),
+		}).Infof("record stop fail: %+v", err)
+	} else {
+		l.Logger.WithFields(logrus.Fields{
+			"pf": r.show.GetPlatform(),
+			"id": r.show.GetRoomID(),
+		}).Info("record stop success")
+	}
 }
 
 func (r *recorder) run() {
-	r.show.AddRecorder()
 	for {
 		select {
 		case <-r.stop:
 			close(r.done)
+			l.Logger.WithFields(logrus.Fields{
+				"pf": r.show.GetPlatform(),
+				"id": r.show.GetRoomID(),
+			}).Info("recorder stop")
 			return
 		default:
 			r.record()

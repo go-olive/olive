@@ -24,6 +24,7 @@ type ID string
 type Show interface {
 	GetID() ID
 	GetRoomID() string
+	GetPlatform() string
 	StreamURL() (string, error)
 	Snapshot() (*platform.Snapshot, error)
 
@@ -67,6 +68,10 @@ func (s *show) GetID() ID {
 
 func (s *show) GetRoomID() string {
 	return s.RoomID
+}
+
+func (s *show) GetPlatform() string {
+	return s.Platform
 }
 
 func (s *show) genID() ID {

@@ -15,3 +15,17 @@ var EventType = struct {
 	AddRecorder:    201,
 	RemoveRecorder: 202,
 }
+
+func (et EventTypeID) String() string {
+	switch et {
+	case EventType.AddMonitor:
+		return "add monitor"
+	case EventType.RemoveMonitor:
+		return "remove monitor"
+	case EventType.AddRecorder:
+		return "add recorder"
+	case EventType.RemoveRecorder:
+		return "remove recorder"
+	}
+	return "undefined"
+}

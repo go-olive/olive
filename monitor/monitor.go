@@ -8,7 +8,9 @@ import (
 	"github.com/luxcgo/lifesaver/dispatcher"
 	"github.com/luxcgo/lifesaver/engine"
 	"github.com/luxcgo/lifesaver/enum"
+	l "github.com/luxcgo/lifesaver/log"
 	"github.com/luxcgo/lifesaver/platform"
+	"github.com/sirupsen/logrus"
 )
 
 type Monitor interface {
@@ -43,6 +45,12 @@ func (m *monitor) Start() error {
 	m.refresh()
 
 	go m.run()
+
+	l.Logger.WithFields(logrus.Fields{
+		"pf": m.show.GetPlatform(),
+		"id": m.show.GetRoomID(),
+	}).Info("monitor start")
+
 	return nil
 }
 
@@ -51,12 +59,20 @@ func (m *monitor) Stop() {
 		return
 	}
 	close(m.stop)
-	m.show.RemoveMonitor()
+	if err := m.show.RemoveMonitor(); err != nil {
+		l.Logger.Error(err)
+	} else {
+		l.Logger.WithFields(logrus.Fields{
+			"pf": m.show.GetPlatform(),
+			"id": m.show.GetRoomID(),
+		}).Info("monitor stop")
+	}
 }
 
 func (m *monitor) refresh() {
 	latestSnapshot, err := m.show.Snapshot()
 	if err != nil {
+		l.Logger.Error(err)
 		return
 	}
 	defer func() {
@@ -71,12 +87,20 @@ func (m *monitor) refresh() {
 		return
 	}
 
+	l.Logger.WithFields(logrus.Fields{
+		"old": m.snapshot.RoomOn,
+		"new": latestSnapshot.RoomOn,
+	}).Info("live status changed")
+
 	d, ok := dispatcher.SharedManager.Dispatcher(enum.DispatcherType.Recorder)
 	if !ok {
 		return
 	}
 	e := dispatcher.NewEvent(eventType, m.show)
-	d.Dispatch(e)
+	if err := d.Dispatch(e); err != nil {
+		l.Logger.Error(err)
+	}
+
 }
 
 func (m *monitor) run() {
