@@ -1,6 +1,7 @@
 package recorder
 
 import (
+	"log"
 	"sync/atomic"
 	"time"
 
@@ -63,8 +64,6 @@ func (r *recorder) Stop() {
 	}
 	close(r.stop)
 	r.parser.Stop()
-	// // bug
-	// r.show.RemoveRecorder()
 }
 
 func (r *recorder) StartTime() time.Time {
@@ -79,14 +78,16 @@ func (r *recorder) record() {
 		return
 	}
 	t := time.Now().Format("[2006-01-02 15-04-05].flv")
-	err = r.parser.Parse(u, t)
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": r.show.GetPlatform(),
 		"id": r.show.GetRoomID(),
 	}).Info("record start")
 
+	err = r.parser.Parse(u, t)
+
 	if err != nil {
+		log.Println(err.Error())
 		l.Logger.WithFields(logrus.Fields{
 			"pf": r.show.GetPlatform(),
 			"id": r.show.GetRoomID(),

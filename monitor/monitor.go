@@ -41,15 +41,16 @@ func (m *monitor) Start() error {
 	if !atomic.CompareAndSwapUint32(&m.status, enum.Status.Starting, enum.Status.Pending) {
 		return nil
 	}
-	defer atomic.CompareAndSwapUint32(&m.status, enum.Status.Pending, enum.Status.Running)
-	m.refresh()
-
-	go m.run()
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": m.show.GetPlatform(),
 		"id": m.show.GetRoomID(),
 	}).Info("monitor start")
+
+	defer atomic.CompareAndSwapUint32(&m.status, enum.Status.Pending, enum.Status.Running)
+	m.refresh()
+
+	go m.run()
 
 	return nil
 }
@@ -59,14 +60,6 @@ func (m *monitor) Stop() {
 		return
 	}
 	close(m.stop)
-	if err := m.show.RemoveMonitor(); err != nil {
-		l.Logger.Error(err)
-	} else {
-		l.Logger.WithFields(logrus.Fields{
-			"pf": m.show.GetPlatform(),
-			"id": m.show.GetRoomID(),
-		}).Info("monitor stop")
-	}
 }
 
 func (m *monitor) refresh() {
@@ -114,6 +107,10 @@ func (m *monitor) run() {
 		select {
 		case <-m.stop:
 			close(m.done)
+			l.Logger.WithFields(logrus.Fields{
+				"pf": m.show.GetPlatform(),
+				"id": m.show.GetRoomID(),
+			}).Info("monitor stop")
 			return
 		case <-t.C:
 			m.refresh()
