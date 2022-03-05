@@ -81,6 +81,8 @@ func (m *monitor) refresh() {
 	}
 
 	l.Logger.WithFields(logrus.Fields{
+		"pf":  m.show.GetPlatform(),
+		"id":  m.show.GetRoomID(),
 		"old": m.snapshot.RoomOn,
 		"new": latestSnapshot.RoomOn,
 	}).Info("live status changed")

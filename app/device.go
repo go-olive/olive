@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/luxcgo/lifesaver/engine"
+	l "github.com/luxcgo/lifesaver/log"
 	"github.com/luxcgo/lifesaver/monitor"
 	"github.com/luxcgo/lifesaver/recorder"
 )
@@ -52,7 +53,8 @@ func (d *device) listenSignal() {
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGTERM, syscall.SIGINT)
 	for sig := range ch {
-		log.Printf("收到结束信号(%s)，准备结束进程\n", sig.String())
+		l.Logger.WithField("signal", sig.String()).
+			Info("handle request")
 		d.Stop()
 		return
 	}

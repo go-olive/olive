@@ -2,11 +2,12 @@ package streamlink
 
 import (
 	"io"
-	"log"
 	"os/exec"
 	"sync"
 
+	l "github.com/luxcgo/lifesaver/log"
 	"github.com/luxcgo/lifesaver/parser"
+	"github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -41,8 +42,11 @@ func (s *streamlink) Type() string {
 
 // streamlink -o "a.mp4"  https://www.huya.com/631275 best -f
 func (s *streamlink) Parse(streamURL string, out string) (err error) {
-	log.Println(streamURL)
-	log.Println("work")
+	l.Logger.WithFields(logrus.Fields{
+		// "streamURL": streamURL,
+		"out": out,
+	}).Debug("streamlink working")
+
 	s.cmd = exec.Command(
 		"streamlink",
 		"-o", out,
@@ -50,6 +54,7 @@ func (s *streamlink) Parse(streamURL string, out string) (err error) {
 		"best",
 		"-f",
 	)
+	// s.cmd.Stderr = os.Stderr
 	if s.cmdStdIn, err = s.cmd.StdinPipe(); err != nil {
 		return err
 	}

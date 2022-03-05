@@ -5,7 +5,9 @@ import (
 	"os/exec"
 	"sync"
 
+	l "github.com/luxcgo/lifesaver/log"
 	"github.com/luxcgo/lifesaver/parser"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -43,7 +45,11 @@ func (p *ffmpeg) Type() string {
 }
 
 func (p *ffmpeg) Parse(streamURL string, out string) (err error) {
-	// log.Println(streamURL)
+	l.Logger.WithFields(logrus.Fields{
+		// "streamURL": streamURL,
+		"out": out,
+	}).Debug("ffmpeg working")
+
 	p.cmd = exec.Command(
 		"ffmpeg",
 		"-nostats",
@@ -58,6 +64,7 @@ func (p *ffmpeg) Parse(streamURL string, out string) (err error) {
 		"-f", "flv",
 		out,
 	)
+	// p.cmd.Stderr = os.Stderr
 	if p.cmdStdIn, err = p.cmd.StdinPipe(); err != nil {
 		return err
 	}

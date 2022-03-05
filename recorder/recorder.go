@@ -1,7 +1,6 @@
 package recorder
 
 import (
-	"log"
 	"sync/atomic"
 	"time"
 
@@ -86,18 +85,11 @@ func (r *recorder) record() {
 
 	err = r.parser.Parse(u, t)
 
-	if err != nil {
-		log.Println(err.Error())
-		l.Logger.WithFields(logrus.Fields{
-			"pf": r.show.GetPlatform(),
-			"id": r.show.GetRoomID(),
-		}).Infof("record stop fail: %+v", err)
-	} else {
-		l.Logger.WithFields(logrus.Fields{
-			"pf": r.show.GetPlatform(),
-			"id": r.show.GetRoomID(),
-		}).Info("record stop success")
-	}
+	l.Logger.WithFields(logrus.Fields{
+		"pf": r.show.GetPlatform(),
+		"id": r.show.GetRoomID(),
+	}).Infof("record stop: %+v", err)
+
 }
 
 func (r *recorder) run() {
