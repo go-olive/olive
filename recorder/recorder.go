@@ -72,7 +72,11 @@ func (r *recorder) StartTime() time.Time {
 func (r *recorder) record() {
 	u, err := r.show.StreamURL()
 	if err != nil {
-		l.Logger.Error(err)
+		l.Logger.WithFields(logrus.Fields{
+			"pf":  r.show.GetPlatform(),
+			"id":  r.show.GetRoomID(),
+			"err": err.Error(),
+		}).Debug("fail to get StreamURL")
 		time.Sleep(5 * time.Second)
 		return
 	}

@@ -38,6 +38,17 @@ func (c *huyaCtrl) Name() string {
 }
 
 func (c *huyaCtrl) StreamURL(roomID string) (string, error) {
+	snapshot, err := c.Snapshot(roomID)
+	if err != nil {
+		return "", err
+	}
+	if snapshot.RoomOn {
+		return snapshot.StreamURL, nil
+	}
+	return "", errors.New("not on air")
+}
+
+func (c *huyaCtrl) streamURL(roomID string) (string, error) {
 	roomURL := fmt.Sprintf("https://m.huya.com/%s", roomID)
 	req, err := http.NewRequest("GET", roomURL, nil)
 	if err != nil {
@@ -114,7 +125,12 @@ func (c *huyaCtrl) Snapshot(roomID string) (*platform.Snapshot, error) {
 	defer resp.Body.Close()
 	content, _ := ioutil.ReadAll(resp.Body)
 	roomOn := strings.Contains(string(content), `"isOn":true`)
-	return &platform.Snapshot{
+	snapshot := &platform.Snapshot{
 		RoomOn: roomOn,
-	}, nil
+	}
+	if snapshot.RoomOn {
+		snapshot.StreamURL, err = c.streamURL(roomID)
+		return snapshot, err
+	}
+	return snapshot, nil
 }
