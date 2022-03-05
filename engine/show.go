@@ -12,13 +12,6 @@ import (
 	"github.com/luxcgo/lifesaver/platform"
 )
 
-var Shows = []*show{
-	{
-		Platform: "huya",
-		RoomID:   "291252",
-	},
-}
-
 type ID string
 
 type Show interface {
@@ -50,7 +43,7 @@ type show struct {
 func NewShow(platformType, roomID, streamerName string) (Show, error) {
 	pc, valid := platform.SharedManager.Ctrl(platformType)
 	if !valid {
-		return nil, errors.New("not exist")
+		return nil, errors.New("platform not exist")
 	}
 
 	s := &show{

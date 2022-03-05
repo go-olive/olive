@@ -1,16 +1,17 @@
 package app
 
 import (
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/luxcgo/lifesaver/config"
 	"github.com/luxcgo/lifesaver/engine"
 	l "github.com/luxcgo/lifesaver/log"
 	"github.com/luxcgo/lifesaver/monitor"
 	"github.com/luxcgo/lifesaver/recorder"
+	"github.com/sirupsen/logrus"
 )
 
 type IDevice interface {
@@ -29,21 +30,17 @@ func NewDevice() IDevice {
 }
 
 func (d *device) Run() {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-
-	s, err := engine.NewShow("huya", "yingying8808", "沐莹莹")
-	if err != nil {
-		println(err)
-		return
+	for _, v := range config.APP.Shows {
+		s, err := engine.NewShow(v.Platform, v.RoomID, v.StreamerName)
+		if err != nil {
+			l.Logger.WithFields(logrus.Fields{
+				"pf": v.Platform,
+				"id": v.RoomID,
+			}).Error(err)
+			continue
+		}
+		s.AddMonitor()
 	}
-	s.AddMonitor()
-
-	s2, err := engine.NewShow("youtube", "UCwV9VXgUFpCKbf8SUsE6OSw", "domado")
-	if err != nil {
-		println(err)
-		return
-	}
-	s2.AddMonitor()
 
 	go d.listenSignal()
 	<-d.done
@@ -63,7 +60,7 @@ func (d *device) listenSignal() {
 func (d *device) Stop() {
 	go func() {
 		<-time.After(time.Duration(time.Second * 5))
-		log.Printf("超时，强制退出~\n")
+		l.Logger.Info("timeout, force quit")
 		d.done <- struct{}{}
 	}()
 	recorder.RecorderManager.Stop()

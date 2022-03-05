@@ -43,7 +43,7 @@ func (m *Manager) removeMonitor(show engine.Show) error {
 
 	monitor, ok := m.savers[show.GetID()]
 	if !ok {
-		return errors.New("not exist")
+		return errors.New("monitor not exist")
 	}
 	monitor.Stop()
 	delete(m.savers, show.GetID())
