@@ -23,8 +23,9 @@ type ID string
 
 type Show interface {
 	GetID() ID
-	GetRoomID() string
 	GetPlatform() string
+	GetRoomID() string
+	GetStreamerName() string
 	StreamURL() (string, error)
 	Snapshot() (*platform.Snapshot, error)
 
@@ -37,24 +38,26 @@ type Show interface {
 }
 
 type show struct {
-	ID       ID
-	Platform string
-	RoomID   string
+	ID           ID
+	Platform     string
+	RoomID       string
+	StreamerName string
 	enum.ShowTaskStatusID
 	stop chan struct{}
 	ctrl platform.PlatformCtrl
 }
 
-func NewShow(platformType, roomID string) (Show, error) {
+func NewShow(platformType, roomID, streamerName string) (Show, error) {
 	pc, valid := platform.SharedManager.Ctrl(platformType)
 	if !valid {
 		return nil, errors.New("not exist")
 	}
 
 	s := &show{
-		Platform: platformType,
-		RoomID:   roomID,
-		stop:     make(chan struct{}),
+		Platform:     platformType,
+		RoomID:       roomID,
+		StreamerName: streamerName,
+		stop:         make(chan struct{}),
 
 		ctrl: pc,
 	}
@@ -68,6 +71,10 @@ func (s *show) GetID() ID {
 
 func (s *show) GetRoomID() string {
 	return s.RoomID
+}
+
+func (s *show) GetStreamerName() string {
+	return s.StreamerName
 }
 
 func (s *show) GetPlatform() string {

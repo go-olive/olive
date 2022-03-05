@@ -1,6 +1,7 @@
 package recorder
 
 import (
+	"fmt"
 	"sync/atomic"
 	"time"
 
@@ -80,14 +81,15 @@ func (r *recorder) record() {
 		time.Sleep(5 * time.Second)
 		return
 	}
-	t := time.Now().Format("[2006-01-02 15-04-05].flv")
+	out := fmt.Sprintf("[2006-01-02 15-04-05][%s].flv", r.show.GetStreamerName())
+	out = time.Now().Format(out)
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": r.show.GetPlatform(),
 		"id": r.show.GetRoomID(),
 	}).Info("record start")
 
-	err = r.parser.Parse(u, t)
+	err = r.parser.Parse(u, out)
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": r.show.GetPlatform(),

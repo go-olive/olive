@@ -31,14 +31,14 @@ func NewDevice() IDevice {
 func (d *device) Run() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	s, err := engine.NewShow("huya", "yingying8808")
+	s, err := engine.NewShow("huya", "yingying8808", "沐莹莹")
 	if err != nil {
 		println(err)
 		return
 	}
 	s.AddMonitor()
 
-	s2, err := engine.NewShow("youtube", "UCwV9VXgUFpCKbf8SUsE6OSw")
+	s2, err := engine.NewShow("youtube", "UCwV9VXgUFpCKbf8SUsE6OSw", "domado")
 	if err != nil {
 		println(err)
 		return
