@@ -98,37 +98,21 @@ func (s *show) NewParser() (parser.Parser, error) {
 }
 
 func (s *show) AddMonitor() error {
-	d, ok := dispatcher.SharedManager.Dispatcher(enum.DispatcherType.Monitor)
-	if !ok {
-		return errors.New("internal error")
-	}
 	e := dispatcher.NewEvent(enum.EventType.AddMonitor, s)
-	return d.Dispatch(e)
+	return dispatcher.SharedManager.Dispatch(e)
 }
 
 func (s *show) RemoveMonitor() error {
-	d, ok := dispatcher.SharedManager.Dispatcher(enum.DispatcherType.Monitor)
-	if !ok {
-		return errors.New("internal error")
-	}
 	e := dispatcher.NewEvent(enum.EventType.RemoveMonitor, s)
-	return d.Dispatch(e)
+	return dispatcher.SharedManager.Dispatch(e)
 }
 
 func (s *show) AddRecorder() error {
-	d, ok := dispatcher.SharedManager.Dispatcher(enum.DispatcherType.Recorder)
-	if !ok {
-		return errors.New("internal error")
-	}
 	e := dispatcher.NewEvent(enum.EventType.AddRecorder, s)
-	return d.Dispatch(e)
+	return dispatcher.SharedManager.Dispatch(e)
 }
 
 func (s *show) RemoveRecorder() error {
-	d, ok := dispatcher.SharedManager.Dispatcher(enum.DispatcherType.Recorder)
-	if !ok {
-		return errors.New("internal error")
-	}
 	e := dispatcher.NewEvent(enum.EventType.RemoveRecorder, s)
-	return d.Dispatch(e)
+	return dispatcher.SharedManager.Dispatch(e)
 }

@@ -36,3 +36,10 @@ func (m *Manager) Dispatch(event *dispatcher.Event) error {
 func (m *Manager) DispatcherType() enum.DispatcherTypeID {
 	return enum.DispatcherType.Recorder
 }
+
+func (m *Manager) DispatchTypes() []enum.EventTypeID {
+	return []enum.EventTypeID{
+		enum.EventType.AddRecorder,
+		enum.EventType.RemoveRecorder,
+	}
+}

@@ -7,4 +7,5 @@ import (
 type Dispatcher interface {
 	Dispatch(event *Event) error
 	DispatcherType() enum.DispatcherTypeID
+	DispatchTypes() []enum.EventTypeID
 }
