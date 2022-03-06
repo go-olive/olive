@@ -116,3 +116,8 @@ func (s *show) RemoveRecorder() error {
 	e := dispatcher.NewEvent(enum.EventType.RemoveRecorder, s)
 	return dispatcher.SharedManager.Dispatch(e)
 }
+
+func (s *show) Stop() {
+	dispatcher.SharedManager.Dispatch(dispatcher.NewEvent(enum.EventType.RemoveMonitor, s))
+	dispatcher.SharedManager.Dispatch(dispatcher.NewEvent(enum.EventType.RemoveRecorder, s))
+}
