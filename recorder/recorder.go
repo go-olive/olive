@@ -2,13 +2,16 @@ package recorder
 
 import (
 	"fmt"
+	"os"
 	"sync/atomic"
 	"time"
 
+	"github.com/luxcgo/lifesaver/config"
 	"github.com/luxcgo/lifesaver/engine"
 	"github.com/luxcgo/lifesaver/enum"
 	l "github.com/luxcgo/lifesaver/log"
 	"github.com/luxcgo/lifesaver/parser"
+	"github.com/luxcgo/lifesaver/uploader"
 	"github.com/sirupsen/logrus"
 )
 
@@ -71,6 +74,23 @@ func (r *recorder) StartTime() time.Time {
 }
 
 func (r *recorder) record() {
+	var out string
+	defer func() {
+		fi, err := os.Stat(out)
+		if err != nil {
+			return
+		}
+		const tenMB = 1e7
+		if fi.Size() < tenMB {
+			os.Remove(out)
+			return
+		}
+
+		if config.APP.UploadConfig.Enable {
+			r.SubmitUploadTask(out)
+		}
+	}()
+
 	u, err := r.show.StreamURL()
 	if err != nil {
 		l.Logger.WithFields(logrus.Fields{
@@ -81,8 +101,9 @@ func (r *recorder) record() {
 		time.Sleep(5 * time.Second)
 		return
 	}
-	out := fmt.Sprintf("[2006-01-02 15-04-05][%s].flv", r.show.GetStreamerName())
-	out = time.Now().Format(out)
+
+	const format = "2006-01-02 15-04-05"
+	out = fmt.Sprintf("[%s][%s].flv", time.Now().Format(format), r.show.GetStreamerName())
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": r.show.GetPlatform(),
@@ -116,4 +137,11 @@ func (r *recorder) run() {
 
 func (r *recorder) Done() <-chan struct{} {
 	return r.done
+}
+
+func (r *recorder) SubmitUploadTask(filepath string) {
+	uploader.UploaderWorkerPool.AddTask(&uploader.UploadTask{
+		Filepath: filepath,
+		Tryout:   2,
+	})
 }

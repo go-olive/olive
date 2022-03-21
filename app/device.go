@@ -11,6 +11,7 @@ import (
 	l "github.com/luxcgo/lifesaver/log"
 	"github.com/luxcgo/lifesaver/monitor"
 	"github.com/luxcgo/lifesaver/recorder"
+	"github.com/luxcgo/lifesaver/uploader"
 	"github.com/sirupsen/logrus"
 )
 
@@ -41,7 +42,7 @@ func (d *device) Run() {
 		}
 		s.AddMonitor()
 	}
-
+	uploader.UploaderWorkerPool.Run()
 	go d.listenSignal()
 	<-d.done
 }
@@ -65,5 +66,6 @@ func (d *device) Stop() {
 	}()
 	recorder.RecorderManager.Stop()
 	monitor.MonitorManager.Stop()
+	uploader.UploaderWorkerPool.Stop()
 	close(d.done)
 }

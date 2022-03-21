@@ -12,13 +12,19 @@ var (
 )
 
 type appConfig struct {
-	Shows []*Show
+	UploadConfig *UploadConfig
+	Shows        []*Show
 }
 
 type Show struct {
 	Platform     string
 	RoomID       string
 	StreamerName string
+}
+
+type UploadConfig struct {
+	Enable   bool
+	ExecPath string
 }
 
 func init() {
