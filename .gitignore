@@ -13,3 +13,14 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+lifesaver
+
+*.log
+*.toml
+*.json
+*.flv
+
+.vscode/
+archive/
+trash/
