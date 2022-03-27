@@ -49,4 +49,7 @@ func verify() {
 		l.Logger.Info("use default APP config")
 		APP = &defaultAPP
 	}
+	if APP.UploadConfig == nil {
+		APP.UploadConfig = &UploadConfig{}
+	}
 }
