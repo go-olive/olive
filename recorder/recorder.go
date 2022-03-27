@@ -103,7 +103,7 @@ func (r *recorder) record() {
 	}
 
 	const format = "2006-01-02 15-04-05"
-	out = fmt.Sprintf("[%s][%s].flv", time.Now().Format(format), r.show.GetStreamerName())
+	out = fmt.Sprintf("[%s][%s].flv", r.show.GetStreamerName(), time.Now().Format(format))
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": r.show.GetPlatform(),

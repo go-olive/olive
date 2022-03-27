@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -49,8 +48,6 @@ func (this *HttpRequest) Send() error {
 	for k, v := range this.Header {
 		req.Header.Set(k, v)
 	}
-
-	log.Println("client.Do(req)")
 
 	resp, err := client.Do(req)
 	if err != nil {
