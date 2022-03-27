@@ -50,7 +50,7 @@ func (c *bilibiliCtrl) WithRoomOn() platform.Option {
 		if err := req.Send(); err != nil {
 			return err
 		}
-		if roomInit.Code == 0 || roomInit.Data.LiveStatus == 1 {
+		if roomInit.Code == 0 && roomInit.Data.LiveStatus == 1 {
 			s.RoomID = fmt.Sprint(roomInit.Data.RoomID)
 			s.RoomOn = true
 			return nil
