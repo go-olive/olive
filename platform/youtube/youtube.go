@@ -68,7 +68,9 @@ func (c *youtubeCtrl) WithRoomOn() platform.Option {
 			return err
 		}
 		s.RoomOn = strings.Contains(content, `icon":{"iconType":"LIVE"}}`)
-
+		if !s.RoomOn {
+			return errors.New("not on air")
+		}
 		streamID, err := util.Match(`"videoRenderer":{"videoId":"([^"]+)",`, content)
 		if err != nil {
 			return err
