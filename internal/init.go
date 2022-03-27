@@ -1,6 +1,7 @@
 package internal
 
 import (
+	_ "github.com/luxcgo/lifesaver/platform/bilibili"
 	_ "github.com/luxcgo/lifesaver/platform/huya"
 	_ "github.com/luxcgo/lifesaver/platform/youtube"
 
