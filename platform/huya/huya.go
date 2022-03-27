@@ -6,8 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
-	"net/http"
 	"net/url"
 	"regexp"
 	"strconv"
@@ -15,9 +13,8 @@ import (
 	"time"
 
 	"github.com/luxcgo/lifesaver/platform"
+	"github.com/luxcgo/lifesaver/util"
 )
-
-const userAgent = "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko); Chrome/75.0.3770.100 Mobile Safari/537.36 "
 
 func init() {
 	platform.SharedManager.RegisterCtrl(
@@ -37,32 +34,22 @@ func (c *huyaCtrl) Name() string {
 	return "虎牙"
 }
 
-func (c *huyaCtrl) StreamURL(roomID string) (string, error) {
-	snapshot, err := c.Snapshot(roomID)
-	if err != nil {
-		return "", err
-	}
-	if snapshot.RoomOn {
-		return snapshot.StreamURL, nil
-	}
-	return "", errors.New("not on air")
-}
-
 func (c *huyaCtrl) streamURL(roomID string) (string, error) {
 	roomURL := fmt.Sprintf("https://m.huya.com/%s", roomID)
-	req, err := http.NewRequest("GET", roomURL, nil)
-	if err != nil {
+	userAgent := "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko); Chrome/75.0.3770.100 Mobile Safari/537.36 "
+	req := &util.HttpRequest{
+		URL:          roomURL,
+		Method:       "GET",
+		ResponseData: *new(string),
+		ContentType:  "application/x-www-form-urlencoded",
+		Header: map[string]string{
+			"User-Agent": userAgent,
+		},
+	}
+	if err := req.Send(); err != nil {
 		return "", err
 	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("User-Agent", userAgent)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-	content, _ := ioutil.ReadAll(resp.Body)
-	respBody := string(content)
+	respBody := fmt.Sprint(req.ResponseData)
 	re := regexp.MustCompile(`liveLineUrl":"([^"]+)",`)
 	submatch := re.FindAllStringSubmatch(respBody, -1)
 	res := make([]string, 0)
@@ -109,28 +96,34 @@ func (*huyaCtrl) proc(in string) string {
 	return url
 }
 
-func (c *huyaCtrl) Snapshot(roomID string) (*platform.Snapshot, error) {
-	webUserAgent := "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
-	roomURL := fmt.Sprintf("https://www.huya.com/%s", roomID)
-	req, err := http.NewRequest("GET", roomURL, nil)
-	if err != nil {
-		return nil, err
+func (c *huyaCtrl) WithRoomOn() platform.Option {
+	return func(s *platform.Snapshot) error {
+		webUserAgent := "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+		roomURL := fmt.Sprintf("https://www.huya.com/%s", s.RoomID)
+		req := &util.HttpRequest{
+			URL:          roomURL,
+			Method:       "GET",
+			ResponseData: *new(string),
+			ContentType:  "application/x-www-form-urlencoded",
+			Header: map[string]string{
+				"User-Agent": webUserAgent,
+			},
+		}
+		if err := req.Send(); err != nil {
+			return err
+		}
+		resp := fmt.Sprint(req.ResponseData)
+		s.RoomOn = strings.Contains(resp, `"isOn":true`)
+		return nil
 	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("User-Agent", webUserAgent)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, err
+}
+
+func (c *huyaCtrl) WithStreamURL() platform.Option {
+	return func(s *platform.Snapshot) (err error) {
+		if !s.RoomOn {
+			return errors.New("not on air")
+		}
+		s.StreamURL, err = c.streamURL(s.RoomID)
+		return
 	}
-	defer resp.Body.Close()
-	content, _ := ioutil.ReadAll(resp.Body)
-	roomOn := strings.Contains(string(content), `"isOn":true`)
-	snapshot := &platform.Snapshot{
-		RoomOn: roomOn,
-	}
-	if snapshot.RoomOn {
-		snapshot.StreamURL, err = c.streamURL(roomID)
-		return snapshot, err
-	}
-	return snapshot, nil
 }

@@ -31,7 +31,11 @@ func (p *Manager) Ctrl(typ string) (PlatformCtrl, bool) {
 type PlatformCtrl interface {
 	Type() string
 	Name() string
-	StreamURL(roomID string) (string, error)
-	Snapshot(roomID string) (*Snapshot, error)
 	ParserType() string
+
+	WithRoomOn() Option
+	WithStreamURL() Option
+
+	StreamURL(c PlatformCtrl, roomID string) (string, error)
+	Snapshot(c PlatformCtrl, roomID string, options ...Option) (*Snapshot, error)
 }

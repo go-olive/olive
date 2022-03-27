@@ -82,11 +82,11 @@ func (s *show) genID() ID {
 }
 
 func (s *show) StreamURL() (string, error) {
-	return s.ctrl.StreamURL(s.RoomID)
+	return s.ctrl.StreamURL(s.ctrl, s.RoomID)
 }
 
 func (s *show) Snapshot() (*platform.Snapshot, error) {
-	return s.ctrl.Snapshot(s.RoomID)
+	return s.ctrl.Snapshot(s.ctrl, s.RoomID)
 }
 
 func (s *show) NewParser() (parser.Parser, error) {

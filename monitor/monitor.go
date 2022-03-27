@@ -65,6 +65,9 @@ func (m *monitor) Stop() {
 func (m *monitor) refresh() {
 	latestSnapshot, err := m.show.Snapshot()
 	if err != nil {
+		if err.Error() == "not on air" {
+			return
+		}
 		l.Logger.Error(err)
 		return
 	}
