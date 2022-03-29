@@ -8,6 +8,7 @@ func (b *Base) ParserType() string {
 }
 
 func (b *Base) DefaultOptions(pc PlatformCtrl) []Option {
+	// order sensitive
 	return []Option{
 		pc.WithRoomOn(),
 		pc.WithStreamURL(),

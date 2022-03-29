@@ -28,7 +28,7 @@ type HttpRequest struct {
 	URL          string
 	Method       string
 	Param        io.Reader
-	RequestData  map[string]string
+	RequestData  map[string]interface{}
 	ResponseData interface{}
 	Header       map[string]string
 	ContentType  string
@@ -74,7 +74,7 @@ func (this *HttpRequest) buildParam() (io.Reader, error) {
 		body := new(bytes.Buffer)
 		writer := multipart.NewWriter(body)
 		for k, v := range this.RequestData {
-			if err := writer.WriteField(k, v); err != nil {
+			if err := writer.WriteField(k, fmt.Sprint(v)); err != nil {
 				return nil, fmt.Errorf("write form field %s:%s failed: %s", k, v, err.Error())
 			}
 		}
@@ -86,7 +86,7 @@ func (this *HttpRequest) buildParam() (io.Reader, error) {
 	case "application/x-www-form-urlencoded":
 		body := make(url.Values)
 		for k, v := range this.RequestData {
-			body[k] = []string{v}
+			body[k] = []string{fmt.Sprint(v)}
 		}
 		paramData := strings.NewReader(body.Encode())
 		return paramData, nil
