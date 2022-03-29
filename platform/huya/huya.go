@@ -114,6 +114,17 @@ func (c *huyaCtrl) WithRoomOn() platform.Option {
 		}
 		resp := fmt.Sprint(req.ResponseData)
 		s.RoomOn = strings.Contains(resp, `"isOn":true`)
+
+		titleRe := regexp.MustCompile(`host-title" title="([^"]+)">`)
+		titleSubmatch := titleRe.FindAllStringSubmatch(resp, -1)
+		titleRes := make([]string, 0)
+		for _, v := range titleSubmatch {
+			titleRes = append(titleRes, string(v[1]))
+		}
+		if len(titleRes) > 0 {
+			s.RoomName = titleRes[0]
+		}
+
 		return nil
 	}
 }
