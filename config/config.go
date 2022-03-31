@@ -1,6 +1,11 @@
 package config
 
 import (
+	"flag"
+	"log"
+	"os"
+	"path/filepath"
+
 	"github.com/fsnotify/fsnotify"
 	l "github.com/luxcgo/lifesaver/log"
 	"github.com/spf13/viper"
@@ -26,6 +31,7 @@ type Show struct {
 type UploadConfig struct {
 	Enable   bool
 	ExecPath string
+	Filepath string
 }
 
 type PlatformConfig struct {
@@ -33,8 +39,17 @@ type PlatformConfig struct {
 }
 
 func init() {
-	viper.SetConfigFile("config.toml")
-	err := viper.ReadInConfig()
+	path, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	appCfgFilePath := filepath.Join(path, "config.toml")
+
+	flag.StringVar(&appCfgFilePath, "c", appCfgFilePath, "config.toml配置文件存放路径")
+	flag.Parse()
+
+	viper.SetConfigFile(appCfgFilePath)
+	err = viper.ReadInConfig()
 	if err != nil {
 		l.Logger.WithField("err", err.Error()).
 			Fatal("load config file failed")

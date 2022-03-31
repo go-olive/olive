@@ -73,13 +73,31 @@ func (u *uploader) upload() (resp []byte, err error) {
 
 	dir, _ := os.Getwd()
 	dir = filepath.Join(dir, u.task.Filepath)
-	println(dir)
-	u.cmd = exec.Command(
-		config.APP.UploadConfig.ExecPath,
-		"upload",
-		"--limit=1",
-		u.task.Filepath,
-	)
+
+	l.Logger.WithFields(logrus.Fields{
+		"filepath": dir,
+	}).Info("upload start")
+
+	if _, err := os.Stat(config.APP.UploadConfig.Filepath); errors.Is(err, os.ErrNotExist) {
+		u.cmd = exec.Command(
+			config.APP.UploadConfig.ExecPath,
+			"upload",
+			"--tag=lifesaver",
+			"--limit=1",
+			"--tid=21",
+			u.task.Filepath,
+		)
+	} else {
+		u.cmd = exec.Command(
+			config.APP.UploadConfig.ExecPath,
+			"upload",
+			"--tag=lifesaver",
+			"-c",
+			config.APP.UploadConfig.Filepath,
+			u.task.Filepath,
+		)
+	}
+
 	go func() {
 		select {
 		case <-u.stopChan:
