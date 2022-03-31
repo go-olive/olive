@@ -44,7 +44,7 @@ func (u *uploader) proc() {
 	resp, err := u.upload()
 	if err != nil {
 		l.Logger.Debug("upload fail: ", err)
-		return
+		// return
 	}
 	if strings.Contains(string(resp), "投稿成功") {
 		l.Logger.WithFields(logrus.Fields{

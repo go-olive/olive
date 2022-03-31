@@ -57,6 +57,7 @@ func (c *huyaCtrl) streamURL(roomID string) (string, error) {
 		res = append(res, string(v[1]))
 	}
 	if len(res) < 1 {
+		// 虎牙平台有直播是处于直播中的状态但获取不到直播源的情况，打开网页看直播也是同样的情况。俗称死亡回放。
 		return "", errors.New("find stream url failed")
 	}
 	a, _ := base64.RawStdEncoding.DecodeString(res[0])

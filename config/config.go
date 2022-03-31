@@ -12,8 +12,9 @@ var (
 )
 
 type appConfig struct {
-	UploadConfig *UploadConfig
-	Shows        []*Show
+	*UploadConfig
+	*PlatformConfig
+	Shows []*Show
 }
 
 type Show struct {
@@ -25,6 +26,10 @@ type Show struct {
 type UploadConfig struct {
 	Enable   bool
 	ExecPath string
+}
+
+type PlatformConfig struct {
+	DouyinCookie string
 }
 
 func init() {
@@ -51,5 +56,8 @@ func verify() {
 	}
 	if APP.UploadConfig == nil {
 		APP.UploadConfig = &UploadConfig{}
+	}
+	if APP.PlatformConfig == nil {
+		APP.PlatformConfig = &PlatformConfig{}
 	}
 }

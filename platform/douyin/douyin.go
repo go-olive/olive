@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	jsoniter "github.com/json-iterator/go"
+	"github.com/luxcgo/lifesaver/config"
 	"github.com/luxcgo/lifesaver/platform"
 	"github.com/luxcgo/lifesaver/util"
 )
@@ -31,6 +32,9 @@ func (c *douyinCtrl) Name() string {
 
 func (c *douyinCtrl) WithRoomOn() platform.Option {
 	return func(s *platform.Snapshot) error {
+		if config.APP.PlatformConfig.DouyinCookie == "" {
+			return fmt.Errorf("抖音cookie未配置")
+		}
 		req := &util.HttpRequest{
 			URL:          fmt.Sprintf("https://live.douyin.com/%s", s.RoomID),
 			Method:       "GET",
@@ -39,7 +43,7 @@ func (c *douyinCtrl) WithRoomOn() platform.Option {
 			Header: map[string]string{
 				"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36 Edg/94.0.992.38",
 				"referer":    "https://live.douyin.com/",
-				"cookie":     "__ac_nonce=062407fa700b3f30681a6; __ac_signature=_02B4Z6wo00f01RQjNPAAAIDAbO3f9VISnn0UAzBAACdLc0;",
+				"cookie":     config.APP.PlatformConfig.DouyinCookie,
 			},
 		}
 		var err error
