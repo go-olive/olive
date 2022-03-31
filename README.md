@@ -19,11 +19,13 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 ## Usage
 
 ```sh
-// install first
+# install first
 go install github.com/luxcgo/lifesaver@latest
 
-// then run
+# run second
 lifesaver -c /path/to/config.toml
+
+# enjoy
 ```
 
 ## Config.toml
