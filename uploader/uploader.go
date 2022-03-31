@@ -123,10 +123,12 @@ func (u *uploader) done() <-chan struct{} {
 }
 
 func (u *uploader) moveToArchive() {
+	os.MkdirAll("archive", os.ModePerm)
 	u.move("archive")
 }
 
 func (u *uploader) moveToTrash() {
+	// os.MkdirAll("trash", os.ModePerm)
 	// u.move("trash")
 	os.Remove(u.task.Filepath)
 }
