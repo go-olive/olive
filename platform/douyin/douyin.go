@@ -33,7 +33,7 @@ func (c *douyinCtrl) Name() string {
 func (c *douyinCtrl) WithRoomOn() platform.Option {
 	return func(s *platform.Snapshot) error {
 		if config.APP.PlatformConfig.DouyinCookie == "" {
-			return fmt.Errorf("抖音cookie未配置")
+			return fmt.Errorf("douyin cookie not configured")
 		}
 		req := &util.HttpRequest{
 			URL:          fmt.Sprintf("https://live.douyin.com/%s", s.RoomID),

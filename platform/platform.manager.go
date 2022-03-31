@@ -1,7 +1,7 @@
 package platform
 
 import (
-	"log"
+	l "github.com/luxcgo/lifesaver/log"
 )
 
 var SharedManager = &Manager{}
@@ -17,7 +17,7 @@ func (p *Manager) RegisterCtrl(ctrls ...PlatformCtrl) {
 	for _, ctrl := range ctrls {
 		_, ok := p.ctrlMap[ctrl.Type()]
 		if ok {
-			log.Printf("[%T]Type(%s)已注册\n", p, ctrl.Type())
+			l.Logger.Error("[%T]Type(%s)已注册\n", p, ctrl.Type())
 		}
 		p.ctrlMap[ctrl.Type()] = ctrl
 	}
