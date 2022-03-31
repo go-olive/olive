@@ -32,27 +32,27 @@ template file to reference [config.toml](tmpl/config.toml)
 
 ```toml
 [UploadConfig]
-// 是否上传到 bilibili
+# 是否上传到 bilibili
 Enable = false
-// biliup-rs 执行路径
+# biliup-rs 执行路径
 ExecPath = "biliup"
-// biliup-rs 配置文件路径，为空的话走默认配置
+# biliup-rs 配置文件路径，为空的话走默认配置
 Filepath = ""
 
 [PlatformConfig]
-// 若有录制抖音直播，可在无痕模式非登录状态下找下面的 cookie 填入即可
+# 若有录制抖音直播，可在无痕模式非登录状态下找下面的 cookie 填入即可
 DouyinCookie = "__ac_nonce=06245c89100e7ab2dd536; __ac_signature=_02B4Z6wo00f01LjBMSAAAIDBwA.aJ.c4z1C44TWAAEx696;"
 
 [[Shows]]
-// 平台名，目前支持：
-// "bilibili"
-// "douyin"
-// "huya"
-// "youtube"
+# 平台名，目前支持：
+# "bilibili"
+# "douyin"
+# "huya"
+# "youtube"
 Platform = "bilibili"
-// 房间号，支持字符串类型的房间号
+# 房间号，支持字符串类型的房间号
 RoomID = "21852"
-// 主播名称
+# 主播名称
 StreamerName = "老番茄"
 ```
 
@@ -60,6 +60,7 @@ StreamerName = "老番茄"
 
 * 支持 go 原生对视频流的抓取，去除 ffmpeg 和 streamlink 的依赖
 * 支持 go 原生对 bilibili 的投稿，去除 biliup-rs 的依赖
+* 增加 YouTube 投稿
 
 * 增加对更多直播平台的支持
 * 增加对程序运行状况的监控
