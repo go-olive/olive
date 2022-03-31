@@ -1,4 +1,4 @@
-module github.com/biliup/lifesaver
+module github.com/luxcgo/lifesaver
 
 go 1.18
 
