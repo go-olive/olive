@@ -1,9 +1,8 @@
 # lifesaver
 
-
 [![GoDoc](https://img.shields.io/badge/GoDoc-Reference-blue?style=for-the-badge&logo=go)](https://pkg.go.dev/github.com/luxcgo/lifesaver?tab=doc)
 [![GoReport](https://goreportcard.com/badge/github.com/luxcgo/lifesaver?style=for-the-badge)](https://goreportcard.com/report/github.com/luxcgo/lifesaver)
-[![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/go-ini/ini)
+[![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/luxcgo/lifesaver)
 
 ## Save Lives!!
 
@@ -60,10 +59,12 @@ StreamerName = "老番茄"
 
 ## RoadMap
 
-* 支持 go 原生对视频流的抓取，去除 ffmpeg 和 streamlink 的依赖
-* 支持 go 原生对 bilibili 的投稿，去除 biliup-rs 的依赖
+* 支持 go 原生对视频流的抓取
+* 支持 go 原生对 bilibili 的投稿
+* 增加多种架构的可执行程序的自动构建
+* 增加 docker image
+* 增加 mock test
 * 增加 YouTube 投稿
-
 * 增加对更多直播平台的支持
 * 增加对程序运行状况的监控
 * 增加网页端
