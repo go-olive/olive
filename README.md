@@ -58,7 +58,7 @@ RoomID = "21852"
 StreamerName = "老番茄"
 ```
 
-## RoodMap
+## RoadMap
 
 * 支持 go 原生对视频流的抓取，去除 ffmpeg 和 streamlink 的依赖
 * 支持 go 原生对 bilibili 的投稿，去除 biliup-rs 的依赖
