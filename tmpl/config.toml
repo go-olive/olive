@@ -1,0 +1,27 @@
+[UploadConfig]
+Enable = false
+ExecPath = "biliup"
+Filepath = ""
+
+[PlatformConfig]
+DouyinCookie = "__ac_nonce=06245c89100e7ab2dd536; __ac_signature=_02B4Z6wo00f01LjBMSAAAIDBwA.aJ.c4z1C44TWAAEx696;"
+
+[[Shows]]
+Platform = "bilibili"
+RoomID = "21852"
+StreamerName = "老番茄"
+
+[[Shows]]
+Platform = "douyin"
+RoomID = "475985691379"
+StreamerName = "李白给csgo"
+
+[[Shows]]
+Platform = "huya"
+RoomID = "wanzi"
+StreamerName = "丸子呦"
+
+[[Shows]]
+Platform = "youtube"
+RoomID = "UCyycMsGv1HlY4SQoOBB8xdg"
+StreamerName = "wtt"
