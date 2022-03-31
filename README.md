@@ -19,7 +19,7 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 
 ```sh
 # install first
-go install github.com/luxcgo/lifesaver@latest
+go install github.com/luxcgo/lifesaver/cmd/lifesaver@latest
 
 # run second
 lifesaver -c /path/to/config.toml
