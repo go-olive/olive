@@ -1,0 +1,56 @@
+project_name: lifesaver
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - binary: lifesaver
+
+    main: ./cmd/lifesaver
+    env:
+      - CGO_ENABLED=0
+
+    goos:
+      - linux
+      - darwin
+      - windows
+      - freebsd
+      - openbsd
+    goarch:
+      - amd64
+      - 386
+      - arm
+      - arm64
+      - ppc64le
+      - s390x
+    goarm:
+      - 7
+      - 6
+      - 5
+    ignore:
+      - goos: darwin
+        goarch: 386
+      - goos: openbsd
+        goarch: arm
+      - goos: openbsd
+        goarch: arm64
+      - goos: freebsd
+        goarch: arm64
+
+changelog:
+  skip: true
+
+archives:
+  - id: lifesaver
+    name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: "{{ .ProjectName }}_v{{ .Version }}_checksums.txt"
