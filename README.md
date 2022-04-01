@@ -14,18 +14,17 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 >
 > 支持B站投稿
 
-
 ## Usage
 
-```sh
-# install first
-go install github.com/luxcgo/lifesaver/cmd/lifesaver@latest
-
-# run second
-lifesaver -c /path/to/config.toml
-
-# enjoy
-```
+1. 安装 **[FFmpeg](https://ffmpeg.org/)**
+2. 安装 **[streamlink](https://streamlink.github.io/)**（若不录制 YouTube 直播无需安装）
+3. 安装 **[biliup-rs](https://github.com/ForgQi/biliup-rs)**（若不上传至哔哩哔哩无需安装）
+4. 安装 [**lifesaver**](https://github.com/biliup/lifesaver)
+    * 可直接在 [**releases**](https://github.com/biliup/lifesaver/releases) 中下载相应平台的执行文件
+    * 或者本地构建`go install github.com/luxcgo/lifesaver/cmd/lifesaver@latest`
+5. 命令行中运行
+    * 直接下载可执行文件`/path/to/lifesaver -c /path/to/config.toml`
+    * 本地构建`lifesaver -c /path/to/config.toml`
 
 ## Config.toml
 
@@ -35,7 +34,7 @@ template file to reference [config.toml](tmpl/config.toml)
 [UploadConfig]
 # 是否上传到 bilibili
 Enable = false
-# biliup-rs 执行路径
+# biliup-rs 可执行文件的路径
 ExecPath = "biliup"
 # biliup-rs 配置文件路径，为空的话走默认配置
 Filepath = ""
@@ -61,7 +60,6 @@ StreamerName = "老番茄"
 
 * 支持 go 原生对视频流的抓取
 * 支持 go 原生对 bilibili 的投稿
-* 增加多种架构的可执行程序的自动构建
 * 增加 docker image
 * 增加 mock test
 * 增加 YouTube 投稿
