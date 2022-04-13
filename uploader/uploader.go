@@ -8,8 +8,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/luxcgo/lifesaver/config"
-	l "github.com/luxcgo/lifesaver/log"
+	"github.com/go-olive/olive/config"
+	l "github.com/go-olive/olive/log"
 	"github.com/sirupsen/logrus"
 )
 
@@ -82,7 +82,7 @@ func (u *uploader) upload() (resp []byte, err error) {
 		u.cmd = exec.Command(
 			config.APP.UploadConfig.ExecPath,
 			"upload",
-			"--tag=lifesaver",
+			"--tag=olive",
 			"--limit=1",
 			"--tid=21",
 			u.task.Filepath,
@@ -91,7 +91,7 @@ func (u *uploader) upload() (resp []byte, err error) {
 		u.cmd = exec.Command(
 			config.APP.UploadConfig.ExecPath,
 			"upload",
-			"--tag=lifesaver",
+			"--tag=olive",
 			"-c",
 			config.APP.UploadConfig.Filepath,
 			u.task.Filepath,

@@ -1,7 +1,7 @@
 package dispatcher
 
 import (
-	"github.com/luxcgo/lifesaver/enum"
+	"github.com/go-olive/olive/enum"
 )
 
 type Dispatcher interface {

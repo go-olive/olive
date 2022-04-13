@@ -1,6 +1,6 @@
 package parser
 
-import l "github.com/luxcgo/lifesaver/log"
+import l "github.com/go-olive/olive/log"
 
 var SharedManager = &Manager{}
 

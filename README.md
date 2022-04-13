@@ -1,8 +1,8 @@
-# lifesaver
+# olive
 
-[![GoDoc](https://img.shields.io/badge/GoDoc-Reference-blue?style=for-the-badge&logo=go)](https://pkg.go.dev/github.com/luxcgo/lifesaver?tab=doc)
-[![GoReport](https://goreportcard.com/badge/github.com/luxcgo/lifesaver?style=for-the-badge)](https://goreportcard.com/report/github.com/luxcgo/lifesaver)
-[![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/luxcgo/lifesaver)
+[![GoDoc](https://img.shields.io/badge/GoDoc-Reference-blue?style=for-the-badge&logo=go)](https://pkg.go.dev/github.com/go-olive/olive?tab=doc)
+[![GoReport](https://goreportcard.com/badge/github.com/go-olive/olive?style=for-the-badge)](https://goreportcard.com/report/github.com/go-olive/olive)
+[![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/go-olive/olive)
 
 ## Save Lives!!
 
@@ -19,12 +19,12 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 1. 安装 **[FFmpeg](https://ffmpeg.org/)**
 2. 安装 **[streamlink](https://streamlink.github.io/)**（若不录制 YouTube 直播无需安装）
 3. 安装 **[biliup-rs](https://github.com/ForgQi/biliup-rs)**（若不上传至哔哩哔哩无需安装）
-4. 安装 [**lifesaver**](https://github.com/biliup/lifesaver)
-    * 可直接在 [**releases**](https://github.com/biliup/lifesaver/releases) 中下载相应平台的执行文件
-    * 或者本地构建`go install github.com/luxcgo/lifesaver/cmd/lifesaver@latest`
+4. 安装 [**olive**](https://github.com/go-olive/olive)
+    * 可直接在 [**releases**](https://github.com/go-olive/olive/releases) 中下载相应平台的执行文件
+    * 或者本地构建`go install github.com/go-olive/olive/cmd/olive@latest`
 5. 命令行中运行
-    * 直接下载可执行文件`/path/to/lifesaver -c /path/to/config.toml`
-    * 本地构建`lifesaver -c /path/to/config.toml`
+    * 直接下载可执行文件`/path/to/olive -c /path/to/config.toml`
+    * 本地构建`olive -c /path/to/config.toml`
 
 ## Config.toml
 

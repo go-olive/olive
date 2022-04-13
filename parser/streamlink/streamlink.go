@@ -5,8 +5,8 @@ import (
 	"os/exec"
 	"sync"
 
-	l "github.com/luxcgo/lifesaver/log"
-	"github.com/luxcgo/lifesaver/parser"
+	l "github.com/go-olive/olive/log"
+	"github.com/go-olive/olive/parser"
 	"github.com/sirupsen/logrus"
 )
 

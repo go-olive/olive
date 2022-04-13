@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	l "github.com/luxcgo/lifesaver/log"
-	"github.com/luxcgo/lifesaver/platform"
-	"github.com/luxcgo/lifesaver/util"
+	l "github.com/go-olive/olive/log"
+	"github.com/go-olive/olive/platform"
+	"github.com/go-olive/olive/util"
 )
 
 func init() {

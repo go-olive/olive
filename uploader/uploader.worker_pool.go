@@ -3,8 +3,8 @@ package uploader
 import (
 	"path/filepath"
 
-	"github.com/luxcgo/lifesaver/config"
-	l "github.com/luxcgo/lifesaver/log"
+	"github.com/go-olive/olive/config"
+	l "github.com/go-olive/olive/log"
 )
 
 var UploaderWorkerPool = NewWorkerPool(1)

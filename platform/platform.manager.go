@@ -1,7 +1,7 @@
 package platform
 
 import (
-	l "github.com/luxcgo/lifesaver/log"
+	l "github.com/go-olive/olive/log"
 )
 
 var SharedManager = &Manager{}

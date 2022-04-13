@@ -6,10 +6,10 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/go-olive/olive/config"
+	"github.com/go-olive/olive/platform"
+	"github.com/go-olive/olive/util"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/luxcgo/lifesaver/config"
-	"github.com/luxcgo/lifesaver/platform"
-	"github.com/luxcgo/lifesaver/util"
 )
 
 func init() {

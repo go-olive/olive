@@ -6,12 +6,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/luxcgo/lifesaver/config"
-	"github.com/luxcgo/lifesaver/engine"
-	l "github.com/luxcgo/lifesaver/log"
-	"github.com/luxcgo/lifesaver/monitor"
-	"github.com/luxcgo/lifesaver/recorder"
-	"github.com/luxcgo/lifesaver/uploader"
+	"github.com/go-olive/olive/config"
+	"github.com/go-olive/olive/engine"
+	l "github.com/go-olive/olive/log"
+	"github.com/go-olive/olive/monitor"
+	"github.com/go-olive/olive/recorder"
+	"github.com/go-olive/olive/uploader"
 	"github.com/sirupsen/logrus"
 )
 

@@ -1,13 +1,13 @@
-project_name: lifesaver
+project_name: olive
 
 before:
   hooks:
     - go mod tidy
 
 builds:
-  - binary: lifesaver
+  - binary: olive
 
-    main: ./cmd/lifesaver
+    main: ./cmd/olive
     env:
       - CGO_ENABLED=0
 
@@ -42,7 +42,7 @@ changelog:
   skip: true
 
 archives:
-  - id: lifesaver
+  - id: olive
     name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     format: tar.gz
     format_overrides:

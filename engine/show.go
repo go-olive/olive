@@ -6,10 +6,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/luxcgo/lifesaver/dispatcher"
-	"github.com/luxcgo/lifesaver/enum"
-	"github.com/luxcgo/lifesaver/parser"
-	"github.com/luxcgo/lifesaver/platform"
+	"github.com/go-olive/olive/dispatcher"
+	"github.com/go-olive/olive/enum"
+	"github.com/go-olive/olive/parser"
+	"github.com/go-olive/olive/platform"
 )
 
 type ID string

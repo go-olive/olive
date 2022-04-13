@@ -3,8 +3,8 @@ package dispatcher
 import (
 	"errors"
 
-	"github.com/luxcgo/lifesaver/enum"
-	l "github.com/luxcgo/lifesaver/log"
+	"github.com/go-olive/olive/enum"
+	l "github.com/go-olive/olive/log"
 )
 
 var SharedManager = &Manager{}

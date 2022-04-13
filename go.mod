@@ -1,4 +1,4 @@
-module github.com/luxcgo/lifesaver
+module github.com/go-olive/olive
 
 go 1.18
 

@@ -6,12 +6,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/luxcgo/lifesaver/config"
-	"github.com/luxcgo/lifesaver/engine"
-	"github.com/luxcgo/lifesaver/enum"
-	l "github.com/luxcgo/lifesaver/log"
-	"github.com/luxcgo/lifesaver/parser"
-	"github.com/luxcgo/lifesaver/uploader"
+	"github.com/go-olive/olive/config"
+	"github.com/go-olive/olive/engine"
+	"github.com/go-olive/olive/enum"
+	l "github.com/go-olive/olive/log"
+	"github.com/go-olive/olive/parser"
+	"github.com/go-olive/olive/uploader"
 	"github.com/sirupsen/logrus"
 )
 

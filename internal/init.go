@@ -1,13 +1,13 @@
 package internal
 
 import (
-	_ "github.com/luxcgo/lifesaver/platform/bilibili"
-	_ "github.com/luxcgo/lifesaver/platform/douyin"
-	_ "github.com/luxcgo/lifesaver/platform/huya"
-	_ "github.com/luxcgo/lifesaver/platform/youtube"
+	_ "github.com/go-olive/olive/platform/bilibili"
+	_ "github.com/go-olive/olive/platform/douyin"
+	_ "github.com/go-olive/olive/platform/huya"
+	_ "github.com/go-olive/olive/platform/youtube"
 
-	_ "github.com/luxcgo/lifesaver/monitor"
+	_ "github.com/go-olive/olive/monitor"
 
-	_ "github.com/luxcgo/lifesaver/parser/ffmpeg"
-	_ "github.com/luxcgo/lifesaver/parser/streamlink"
+	_ "github.com/go-olive/olive/parser/ffmpeg"
+	_ "github.com/go-olive/olive/parser/streamlink"
 )

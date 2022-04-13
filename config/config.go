@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
-	l "github.com/luxcgo/lifesaver/log"
+	l "github.com/go-olive/olive/log"
 	"github.com/spf13/viper"
 )
 

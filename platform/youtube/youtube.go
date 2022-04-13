@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/luxcgo/lifesaver/platform"
-	"github.com/luxcgo/lifesaver/util"
+	"github.com/go-olive/olive/platform"
+	"github.com/go-olive/olive/util"
 )
 
 func init() {
