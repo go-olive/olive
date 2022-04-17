@@ -6,10 +6,13 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/go-olive/olive/src/config"
 	"github.com/go-olive/olive/src/dispatcher"
 	"github.com/go-olive/olive/src/enum"
 	"github.com/go-olive/olive/src/parser"
 	"github.com/go-olive/olive/src/platform"
+
+	"github.com/go-olive/tv"
 )
 
 type ID string
@@ -19,8 +22,6 @@ type Show interface {
 	GetPlatform() string
 	GetRoomID() string
 	GetStreamerName() string
-	StreamURL() (string, error)
-	Snapshot() (*platform.Snapshot, error)
 
 	AddMonitor() error
 	RemoveMonitor() error
@@ -28,31 +29,39 @@ type Show interface {
 	RemoveRecorder() error
 
 	NewParser() (parser.Parser, error)
+
+	tv.ITv
 }
 
 type show struct {
-	ID           ID
-	Platform     string
-	RoomID       string
-	StreamerName string
+	ID       ID
+	Platform string
+	RoomID   string
+	Streamer string
 	enum.ShowTaskStatusID
 	stop chan struct{}
 	ctrl platform.PlatformCtrl
+
+	*tv.Tv
 }
 
 func NewShow(platformType, roomID, streamerName string) (Show, error) {
-	pc, valid := platform.SharedManager.Ctrl(platformType)
-	if !valid {
-		return nil, errors.New("platform not exist")
+	var parms *tv.Parms
+	if platformType == "douyin" {
+		parms.Cookie = config.APP.PlatformConfig.DouyinCookie
+	}
+	tv, err := tv.Snap(tv.NewTv(platformType, roomID), parms)
+	if err != nil {
+		return nil, err
 	}
 
 	s := &show{
-		Platform:     platformType,
-		RoomID:       roomID,
-		StreamerName: streamerName,
-		stop:         make(chan struct{}),
+		Platform: platformType,
+		RoomID:   roomID,
+		Streamer: streamerName,
+		stop:     make(chan struct{}),
 
-		ctrl: pc,
+		Tv: tv,
 	}
 	s.ID = s.genID()
 	return s, nil
@@ -67,7 +76,7 @@ func (s *show) GetRoomID() string {
 }
 
 func (s *show) GetStreamerName() string {
-	return s.StreamerName
+	return s.Streamer
 }
 
 func (s *show) GetPlatform() string {
@@ -81,16 +90,12 @@ func (s *show) genID() ID {
 	return ID(hex.EncodeToString(h.Sum(nil)))
 }
 
-func (s *show) StreamURL() (string, error) {
-	return s.ctrl.StreamURL(s.ctrl, s.RoomID)
-}
-
-func (s *show) Snapshot() (*platform.Snapshot, error) {
-	return s.ctrl.Snapshot(s.ctrl, s.RoomID)
-}
-
 func (s *show) NewParser() (parser.Parser, error) {
-	v, ok := parser.SharedManager.Parser(s.ctrl.ParserType())
+	typ := "flv"
+	if s.SiteID == "youtube" {
+		typ = "streamlink"
+	}
+	v, ok := parser.SharedManager.Parser(typ)
 	if !ok {
 		return nil, errors.New("parser not exist")
 	}

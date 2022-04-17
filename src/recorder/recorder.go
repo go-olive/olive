@@ -91,26 +91,27 @@ func (r *recorder) record() {
 		}
 	}()
 
-	s, err := r.show.Snapshot()
-	if err != nil {
+	r.show.Refresh()
+	streamUrl, ok := r.show.StreamUrl()
+	roomName, _ := r.show.RoomName()
+	if !ok {
 		l.Logger.WithFields(logrus.Fields{
-			"pf":  r.show.GetPlatform(),
-			"id":  r.show.GetRoomID(),
-			"err": err.Error(),
+			"pf": r.show.GetPlatform(),
+			"id": r.show.GetRoomID(),
 		}).Debug("fail to get StreamURL")
 		time.Sleep(5 * time.Second)
 		return
 	}
 
 	const format = "2006-01-02 15-04-05"
-	out = fmt.Sprintf("[%s][%s][%s].flv", r.show.GetStreamerName(), s.RoomName, time.Now().Format(format))
+	out = fmt.Sprintf("[%s][%s][%s].flv", r.show.GetStreamerName(), roomName, time.Now().Format(format))
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": r.show.GetPlatform(),
 		"id": r.show.GetRoomID(),
 	}).Info("record start")
 
-	err = r.parser.Parse(s.StreamURL, out)
+	err := r.parser.Parse(streamUrl, out)
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": r.show.GetPlatform(),

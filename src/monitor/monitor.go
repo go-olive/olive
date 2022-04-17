@@ -8,7 +8,6 @@ import (
 	"github.com/go-olive/olive/src/engine"
 	"github.com/go-olive/olive/src/enum"
 	l "github.com/go-olive/olive/src/log"
-	"github.com/go-olive/olive/src/platform"
 	"github.com/lthibault/jitterbug/v2"
 	"github.com/sirupsen/logrus"
 )
@@ -21,20 +20,20 @@ type Monitor interface {
 
 func NewMonitor(show engine.Show) Monitor {
 	return &monitor{
-		status:   enum.Status.Starting,
-		show:     show,
-		stop:     make(chan struct{}),
-		snapshot: &platform.Snapshot{},
-		done:     make(chan struct{}),
+		status: enum.Status.Starting,
+		show:   show,
+		stop:   make(chan struct{}),
+		done:   make(chan struct{}),
 	}
 }
 
 type monitor struct {
-	status   enum.StatusID
-	show     engine.Show
-	stop     chan struct{}
-	snapshot *platform.Snapshot
-	done     chan struct{}
+	status enum.StatusID
+	show   engine.Show
+	stop   chan struct{}
+	done   chan struct{}
+
+	roomOn bool
 }
 
 func (m *monitor) Start() error {
@@ -63,18 +62,15 @@ func (m *monitor) Stop() {
 }
 
 func (m *monitor) refresh() {
-	latestSnapshot, err := m.show.Snapshot()
-	if err != nil && err.Error() != "not on air" {
-		l.Logger.Error(err)
-		return
-	}
+	m.show.Refresh()
+	_, roomOn := m.show.StreamUrl()
 	defer func() {
-		m.snapshot = latestSnapshot
+		m.roomOn = roomOn
 	}()
 	var eventType enum.EventTypeID
-	if !m.snapshot.RoomOn && latestSnapshot.RoomOn {
+	if !m.roomOn && roomOn {
 		eventType = enum.EventType.AddRecorder
-	} else if m.snapshot.RoomOn && !latestSnapshot.RoomOn {
+	} else if m.roomOn && !roomOn {
 		eventType = enum.EventType.RemoveRecorder
 	} else {
 		return
@@ -83,8 +79,8 @@ func (m *monitor) refresh() {
 	l.Logger.WithFields(logrus.Fields{
 		"pf":  m.show.GetPlatform(),
 		"id":  m.show.GetRoomID(),
-		"old": m.snapshot.RoomOn,
-		"new": latestSnapshot.RoomOn,
+		"old": m.roomOn,
+		"new": roomOn,
 	}).Info("live status changed")
 
 	d, ok := dispatcher.SharedManager.Dispatcher(enum.DispatcherType.Recorder)
