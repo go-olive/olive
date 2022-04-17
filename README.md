@@ -1,7 +1,7 @@
 # olive
 
 [![GoDoc](https://img.shields.io/badge/GoDoc-Reference-blue?style=for-the-badge&logo=go)](https://pkg.go.dev/github.com/go-olive/olive?tab=doc)
-[![GoReport](https://goreportcard.com/badge/github.com/go-olive/olive?style=for-the-badge)](https://goreportcard.com/report/github.com/go-olive/olive)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/go-olive/olive/goreleaser?style=for-the-badge)](https://github.com/go-olive/olive/actions/workflows/release.yml)
 [![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/go-olive/olive)
 
 ## Save Lives!!
@@ -16,13 +16,12 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 
 ## Usage
 
-1. 安装 **[FFmpeg](https://ffmpeg.org/)**
-2. 安装 **[streamlink](https://streamlink.github.io/)**（若不录制 YouTube 直播无需安装）
-3. 安装 **[biliup-rs](https://github.com/ForgQi/biliup-rs)**（若不上传至哔哩哔哩无需安装）
-4. 安装 [**olive**](https://github.com/go-olive/olive)
+1. 安装 **[streamlink](https://streamlink.github.io/)**（若不录制 YouTube 直播无需安装）
+2. 安装 **[biliup-rs](https://github.com/ForgQi/biliup-rs)**（若不上传至哔哩哔哩无需安装）
+3. 安装 [**olive**](https://github.com/go-olive/olive)
     * 可直接在 [**releases**](https://github.com/go-olive/olive/releases) 中下载相应平台的执行文件
     * 或者本地构建`go install github.com/go-olive/olive/src/cmd/olive@latest`
-5. 命令行中运行
+4. 命令行中运行
     * 直接下载可执行文件`/path/to/olive -c /path/to/config.toml`
     * 本地构建`olive -c /path/to/config.toml`
 
@@ -58,12 +57,11 @@ StreamerName = "老番茄"
 
 ## RoadMap
 
-* 支持 go 原生对视频流的抓取
 * 支持 go 原生对 bilibili 的投稿
+* 支持上传至云盘
 * 增加 docker image
 * 增加 mock test
 * 增加 YouTube 投稿
-* 增加对更多直播平台的支持
 * 增加对程序运行状况的监控
 * 增加网页端
 
@@ -71,5 +69,5 @@ StreamerName = "老番茄"
 
 * [bililive-go](https://github.com/hr3lxphr6j/bililive-go)
 * [biliup-rs](https://github.com/ForgQi/biliup-rs)
-* [ffmpeg](https://ffmpeg.org/)
 * [streamlink](https://streamlink.github.io/)
+
