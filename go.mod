@@ -5,8 +5,7 @@ go 1.18
 require (
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/go-olive/flv v0.0.0-20220417125559-80092be84905
-	github.com/go-olive/tv v0.0.0-20220417144056-6e360c066d60
-	github.com/json-iterator/go v1.1.12
+	github.com/go-olive/tv v0.0.0-20220417151225-3ab4e5806e93
 	github.com/lthibault/jitterbug/v2 v2.2.2
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/sirupsen/logrus v1.8.1
@@ -16,6 +15,7 @@ require (
 require (
 	github.com/funny/slab v0.0.0-20180511031532-b1fad5e5d478 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect

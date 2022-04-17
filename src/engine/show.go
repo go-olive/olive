@@ -10,7 +10,6 @@ import (
 	"github.com/go-olive/olive/src/dispatcher"
 	"github.com/go-olive/olive/src/enum"
 	"github.com/go-olive/olive/src/parser"
-	"github.com/go-olive/olive/src/platform"
 
 	"github.com/go-olive/tv"
 )
@@ -40,19 +39,18 @@ type show struct {
 	Streamer string
 	enum.ShowTaskStatusID
 	stop chan struct{}
-	ctrl platform.PlatformCtrl
 
 	*tv.Tv
 }
 
 func NewShow(platformType, roomID, streamerName string) (Show, error) {
-	var parms *tv.Parms
+	parms := new(tv.Parms)
 	if platformType == "douyin" {
 		parms.Cookie = config.APP.PlatformConfig.DouyinCookie
 	}
 	tv, err := tv.Snap(tv.NewTv(platformType, roomID), parms)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Show init failed! err msg: %s", err.Error())
 	}
 
 	s := &show{
