@@ -7,7 +7,7 @@ before:
 builds:
   - binary: olive
 
-    main: ./cmd/olive
+    main: ./src/cmd/olive
     env:
       - CGO_ENABLED=0
 
@@ -51,7 +51,7 @@ archives:
     files:
       - LICENSE
       - README.md
-      - tmpl/config.toml
+      - src/tmpl/config.toml
 
 checksum:
   name_template: "{{ .ProjectName }}_v{{ .Version }}_checksums.txt"

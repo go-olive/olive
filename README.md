@@ -21,7 +21,7 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 3. 安装 **[biliup-rs](https://github.com/ForgQi/biliup-rs)**（若不上传至哔哩哔哩无需安装）
 4. 安装 [**olive**](https://github.com/go-olive/olive)
     * 可直接在 [**releases**](https://github.com/go-olive/olive/releases) 中下载相应平台的执行文件
-    * 或者本地构建`go install github.com/go-olive/olive/cmd/olive@latest`
+    * 或者本地构建`go install github.com/go-olive/olive/src/cmd/olive@latest`
 5. 命令行中运行
     * 直接下载可执行文件`/path/to/olive -c /path/to/config.toml`
     * 本地构建`olive -c /path/to/config.toml`
