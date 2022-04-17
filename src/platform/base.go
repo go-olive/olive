@@ -4,7 +4,7 @@ type Base struct {
 }
 
 func (b *Base) ParserType() string {
-	return "ffmpeg"
+	return "flv"
 }
 
 func (b *Base) DefaultOptions(pc PlatformCtrl) []Option {

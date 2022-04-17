@@ -1,4 +1,4 @@
-package ffmpeg
+package parser
 
 import (
 	"io"
@@ -6,7 +6,6 @@ import (
 	"sync"
 
 	l "github.com/go-olive/olive/src/log"
-	"github.com/go-olive/olive/src/parser"
 	"github.com/sirupsen/logrus"
 )
 
@@ -15,7 +14,7 @@ const (
 )
 
 func init() {
-	parser.SharedManager.Register(
+	SharedManager.Register(
 		new(ffmpeg),
 	)
 }
@@ -28,7 +27,7 @@ type ffmpeg struct {
 	stop      chan struct{}
 }
 
-func (p *ffmpeg) New() parser.Parser {
+func (p *ffmpeg) New() Parser {
 	return &ffmpeg{
 		stop: make(chan struct{}),
 	}

@@ -1,4 +1,4 @@
-package streamlink
+package parser
 
 import (
 	"io"
@@ -6,12 +6,11 @@ import (
 	"sync"
 
 	l "github.com/go-olive/olive/src/log"
-	"github.com/go-olive/olive/src/parser"
 	"github.com/sirupsen/logrus"
 )
 
 func init() {
-	parser.SharedManager.Register(
+	SharedManager.Register(
 		new(streamlink),
 	)
 }
@@ -24,7 +23,7 @@ type streamlink struct {
 	stop      chan struct{}
 }
 
-func (s *streamlink) New() parser.Parser {
+func (s *streamlink) New() Parser {
 	return &streamlink{
 		stop: make(chan struct{}),
 	}
