@@ -27,7 +27,7 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 
 ## Config.toml
 
-template file to reference [config.toml](tmpl/config.toml)
+template file to reference [config.toml](src/tmpl/config.toml)
 
 ```toml
 [UploadConfig]
