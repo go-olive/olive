@@ -1,11 +1,14 @@
 package recorder
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"sync/atomic"
+	"text/template"
 	"time"
 
+	"github.com/Masterminds/sprig"
 	"github.com/go-olive/olive/src/config"
 	"github.com/go-olive/olive/src/engine"
 	"github.com/go-olive/olive/src/enum"
@@ -13,6 +16,11 @@ import (
 	"github.com/go-olive/olive/src/parser"
 	"github.com/go-olive/olive/src/uploader"
 	"github.com/sirupsen/logrus"
+)
+
+var (
+	defaultOutTmpl = template.Must(template.New("filename").Funcs(sprig.TxtFuncMap()).
+		Parse(`[{{ .StreamerName }}][{{ .RoomName }}][{{ now | date "2006-01-02 15-04-05"}}].flv`))
 )
 
 type Recorder interface {
@@ -103,12 +111,35 @@ func (r *recorder) record() {
 		return
 	}
 
-	const format = "2006-01-02 15-04-05"
-	out = fmt.Sprintf("[%s][%s][%s].flv", r.show.GetStreamerName(), roomName, time.Now().Format(format))
+	info := &struct {
+		StreamerName string
+		RoomName     string
+	}{
+		StreamerName: r.show.GetStreamerName(),
+		RoomName:     roomName,
+	}
+
+	tmpl := defaultOutTmpl
+	if r.show.GetOutTmpl() != "" {
+		_tmpl, err := template.New("user_filename").Funcs(sprig.TxtFuncMap()).Parse(r.show.GetOutTmpl())
+		if err == nil {
+			tmpl = _tmpl
+		}
+	}
+
+	buf := new(bytes.Buffer)
+	if err := tmpl.Execute(buf, info); err != nil {
+		l.Logger.Error(err)
+		const format = "2006-01-02 15-04-05"
+		out = fmt.Sprintf("[%s][%s][%s].flv", r.show.GetStreamerName(), roomName, time.Now().Format(format))
+	} else {
+		out = buf.String()
+	}
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": r.show.GetPlatform(),
 		"id": r.show.GetRoomID(),
+		"rn": roomName,
 	}).Info("record start")
 
 	err := r.parser.Parse(streamUrl, out)

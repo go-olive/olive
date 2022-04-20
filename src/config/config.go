@@ -27,6 +27,7 @@ type Show struct {
 	Platform     string
 	RoomID       string
 	StreamerName string
+	OutTmpl      string
 }
 
 type UploadConfig struct {

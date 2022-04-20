@@ -21,6 +21,7 @@ type Show interface {
 	GetPlatform() string
 	GetRoomID() string
 	GetStreamerName() string
+	GetOutTmpl() string
 
 	AddMonitor() error
 	RemoveMonitor() error
@@ -37,13 +38,14 @@ type show struct {
 	Platform string
 	RoomID   string
 	Streamer string
+	OutTmpl  string
 	enum.ShowTaskStatusID
 	stop chan struct{}
 
 	*tv.Tv
 }
 
-func NewShow(platformType, roomID, streamerName string) (Show, error) {
+func NewShow(platformType, roomID, streamerName, outTmpl string) (Show, error) {
 	parms := new(tv.Parms)
 	if platformType == "douyin" {
 		parms.Cookie = config.APP.PlatformConfig.DouyinCookie
@@ -57,7 +59,9 @@ func NewShow(platformType, roomID, streamerName string) (Show, error) {
 		Platform: platformType,
 		RoomID:   roomID,
 		Streamer: streamerName,
-		stop:     make(chan struct{}),
+		OutTmpl:  outTmpl,
+
+		stop: make(chan struct{}),
 
 		Tv: tv,
 	}
@@ -79,6 +83,10 @@ func (s *show) GetStreamerName() string {
 
 func (s *show) GetPlatform() string {
 	return s.Platform
+}
+
+func (s *show) GetOutTmpl() string {
+	return s.OutTmpl
 }
 
 func (s *show) genID() ID {
