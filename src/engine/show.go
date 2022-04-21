@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/go-olive/olive/src/config"
 	"github.com/go-olive/olive/src/dispatcher"
@@ -118,7 +119,7 @@ func (s *show) GetParser() string {
 
 func (s *show) genID() ID {
 	h := md5.New()
-	b := []byte(fmt.Sprintf("%s%s", s.Platform, s.RoomID))
+	b := []byte(fmt.Sprintf("%s%s%d", s.Platform, s.RoomID, time.Now().UnixNano()))
 	h.Write(b)
 	return ID(hex.EncodeToString(h.Sum(nil)))
 }
