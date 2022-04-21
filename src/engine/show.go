@@ -39,13 +39,34 @@ type show struct {
 	RoomID   string
 	Streamer string
 	OutTmpl  string
+	Parser   string
 	enum.ShowTaskStatusID
 	stop chan struct{}
 
 	*tv.Tv
 }
 
-func NewShow(platformType, roomID, streamerName, outTmpl string) (Show, error) {
+type ShowOption func(*show)
+
+func WithStreamerName(name string) ShowOption {
+	return func(s *show) {
+		s.Streamer = name
+	}
+}
+
+func WithOutTmpl(tmpl string) ShowOption {
+	return func(s *show) {
+		s.OutTmpl = tmpl
+	}
+}
+
+func WithParser(parser string) ShowOption {
+	return func(s *show) {
+		s.Parser = parser
+	}
+}
+
+func NewShow(platformType, roomID string, opts ...ShowOption) (Show, error) {
 	parms := new(tv.Parms)
 	if platformType == "douyin" {
 		parms.Cookie = config.APP.PlatformConfig.DouyinCookie
@@ -58,13 +79,15 @@ func NewShow(platformType, roomID, streamerName, outTmpl string) (Show, error) {
 	s := &show{
 		Platform: platformType,
 		RoomID:   roomID,
-		Streamer: streamerName,
-		OutTmpl:  outTmpl,
 
 		stop: make(chan struct{}),
 
 		Tv: tv,
 	}
+	for _, opt := range opts {
+		opt(s)
+	}
+
 	s.ID = s.genID()
 	return s, nil
 }
@@ -89,6 +112,10 @@ func (s *show) GetOutTmpl() string {
 	return s.OutTmpl
 }
 
+func (s *show) GetParser() string {
+	return s.Parser
+}
+
 func (s *show) genID() ID {
 	h := md5.New()
 	b := []byte(fmt.Sprintf("%s%s", s.Platform, s.RoomID))
@@ -96,11 +123,19 @@ func (s *show) genID() ID {
 	return ID(hex.EncodeToString(h.Sum(nil)))
 }
 
+const (
+	defaultTyp = "flv"
+)
+
 func (s *show) NewParser() (parser.Parser, error) {
-	typ := "flv"
+	typ := defaultTyp
 	if s.SiteID == "youtube" {
 		typ = "streamlink"
 	}
+	if s.GetParser() != "" {
+		typ = s.GetParser()
+	}
+
 	v, ok := parser.SharedManager.Parser(typ)
 	if !ok {
 		return nil, errors.New("parser not exist")

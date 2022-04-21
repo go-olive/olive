@@ -32,7 +32,11 @@ func NewDevice() IDevice {
 
 func (d *device) Run() {
 	for _, v := range config.APP.Shows {
-		s, err := engine.NewShow(v.Platform, v.RoomID, v.StreamerName, v.OutTmpl)
+		s, err := engine.NewShow(v.Platform, v.RoomID,
+			engine.WithStreamerName(v.StreamerName),
+			engine.WithOutTmpl(v.OutTmpl),
+			engine.WithParser(v.Parser),
+		)
 		if err != nil {
 			l.Logger.WithFields(logrus.Fields{
 				"pf": v.Platform,

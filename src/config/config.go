@@ -28,6 +28,7 @@ type Show struct {
 	RoomID       string
 	StreamerName string
 	OutTmpl      string
+	Parser       string
 }
 
 type UploadConfig struct {
@@ -86,6 +87,12 @@ func verify() {
 		if v.Platform == "youtube" {
 			if _, err := exec.LookPath("streamlink"); err != nil {
 				l.Logger.Fatal("streamlink needs to be installed first")
+			}
+		}
+
+		if v.Parser != "" {
+			if _, err := exec.LookPath(v.Parser); err != nil {
+				l.Logger.Fatalf("%s needs to be installed first", v.Parser)
 			}
 		}
 	}
