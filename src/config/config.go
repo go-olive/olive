@@ -79,10 +79,6 @@ func verify() {
 		APP.PlatformConfig = &PlatformConfig{}
 	}
 
-	if _, err := exec.LookPath("ffmpeg"); err != nil {
-		l.Logger.Fatal("ffmpeg needs to be installed first")
-	}
-
 	for _, v := range APP.Shows {
 		if v.Platform == "youtube" {
 			if _, err := exec.LookPath("streamlink"); err != nil {
