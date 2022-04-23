@@ -62,7 +62,7 @@ func (m *monitor) Stop() {
 }
 
 func (m *monitor) refresh() {
-	m.show.Refresh()
+	m.show.Snap()
 	_, roomOn := m.show.StreamUrl()
 	defer func() {
 		m.roomOn = roomOn

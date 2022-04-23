@@ -68,11 +68,11 @@ func WithParser(parser string) ShowOption {
 }
 
 func NewShow(platformType, roomID string, opts ...ShowOption) (Show, error) {
-	parms := new(tv.Parms)
+	var cookie string
 	if platformType == "douyin" {
-		parms.Cookie = config.APP.PlatformConfig.DouyinCookie
+		cookie = config.APP.PlatformConfig.DouyinCookie
 	}
-	tv, err := tv.Snap(tv.NewTv(platformType, roomID), parms)
+	t, err := tv.New(platformType, roomID, tv.SetCookie(cookie))
 	if err != nil {
 		return nil, fmt.Errorf("Show init failed! err msg: %s", err.Error())
 	}
@@ -83,7 +83,7 @@ func NewShow(platformType, roomID string, opts ...ShowOption) (Show, error) {
 
 		stop: make(chan struct{}),
 
-		Tv: tv,
+		Tv: t,
 	}
 	for _, opt := range opts {
 		opt(s)

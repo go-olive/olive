@@ -99,7 +99,7 @@ func (r *recorder) record() {
 		}
 	}()
 
-	r.show.Refresh()
+	r.show.Snap()
 	streamUrl, ok := r.show.StreamUrl()
 	roomName, _ := r.show.RoomName()
 	if !ok {

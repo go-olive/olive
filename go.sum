@@ -71,8 +71,8 @@ github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-olive/flv v0.0.0-20220417125559-80092be84905 h1:ZdAnmAn34asfJ3yUT6NDYR5WQHgWyFpEogjf/aj2xkI=
 github.com/go-olive/flv v0.0.0-20220417125559-80092be84905/go.mod h1:lEh2giuivi5AxQBVXcakIiXxusTWwnqgqz/8IvIYh+M=
-github.com/go-olive/tv v0.0.0-20220417151225-3ab4e5806e93 h1:fpIau+snYEQn7Ab7yiOjbsZHIUnG5EmrKo1vASFcEv8=
-github.com/go-olive/tv v0.0.0-20220417151225-3ab4e5806e93/go.mod h1:e4Yq9X2H5wfuIKbo2+mtVVrDLuvoNw8CMqhJwADs8bY=
+github.com/go-olive/tv v0.1.1 h1:a39E71fIWAgkosFTAfqKeCLwL7siV9Dg7vN/OcmLW9I=
+github.com/go-olive/tv v0.1.1/go.mod h1:e4Yq9X2H5wfuIKbo2+mtVVrDLuvoNw8CMqhJwADs8bY=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b/go.mod h1:SBH7ygxi8pfUlaOkMMuAQtPIUF8ecWP5IEl/CR7VP2Q=
 github.com/golang/groupcache v0.0.0-20190702054246-869f871628b6/go.mod h1:cIg4eruTrX1D+g88fzRXU5OdNfaM+9IcxsU14FzY7Hc=
 github.com/golang/groupcache v0.0.0-20191227052852-215e87163ea7/go.mod h1:cIg4eruTrX1D+g88fzRXU5OdNfaM+9IcxsU14FzY7Hc=
