@@ -149,6 +149,9 @@ func (r *recorder) record() {
 		"id": r.show.GetRoomID(),
 	}).Infof("record stop: %+v", err)
 
+	if err != nil {
+		time.Sleep(5 * time.Second)
+	}
 }
 
 func (r *recorder) run() {
