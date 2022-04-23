@@ -80,7 +80,11 @@ func verify() {
 	}
 
 	for _, v := range APP.Shows {
-		if v.Platform == "youtube" {
+		if v.Parser == "flv" {
+			continue
+		}
+
+		if v.Platform == "youtube" && v.Parser == "" {
 			if _, err := exec.LookPath("streamlink"); err != nil {
 				l.Logger.Fatal("streamlink needs to be installed first")
 			}
