@@ -124,20 +124,8 @@ func (s *show) genID() ID {
 	return ID(hex.EncodeToString(h.Sum(nil)))
 }
 
-const (
-	defaultTyp = "flv"
-)
-
 func (s *show) NewParser() (parser.Parser, error) {
-	typ := defaultTyp
-	if s.SiteID == "youtube" {
-		typ = "streamlink"
-	}
-	if s.GetParser() != "" {
-		typ = s.GetParser()
-	}
-
-	v, ok := parser.SharedManager.Parser(typ)
+	v, ok := parser.SharedManager.Parser(s.GetParser())
 	if !ok {
 		return nil, errors.New("parser not exist")
 	}

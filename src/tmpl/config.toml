@@ -25,3 +25,8 @@ StreamerName = "丸子呦"
 Platform = "youtube"
 RoomID = "UCyycMsGv1HlY4SQoOBB8xdg"
 StreamerName = "wtt"
+
+[[Shows]]
+Platform = "twitch"
+RoomID = "leekbeats"
+StreamerName = "LeekBeats"

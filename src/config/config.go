@@ -31,6 +31,20 @@ type Show struct {
 	Parser       string
 }
 
+// fix parser
+func (s *Show) checkAndFix() {
+	if s.Parser != "" {
+		return
+	}
+	switch s.Platform {
+	case "youtube",
+		"twitch":
+		s.Parser = "streamlink"
+	default:
+		s.Parser = "flv"
+	}
+}
+
 type UploadConfig struct {
 	Enable   bool
 	ExecPath string
@@ -79,21 +93,14 @@ func verify() {
 		APP.PlatformConfig = &PlatformConfig{}
 	}
 
-	for _, v := range APP.Shows {
-		if v.Parser == "flv" {
+	for _, s := range APP.Shows {
+		s.checkAndFix()
+		if s.Parser == "flv" {
 			continue
 		}
 
-		if v.Platform == "youtube" && v.Parser == "" {
-			if _, err := exec.LookPath("streamlink"); err != nil {
-				l.Logger.Fatal("streamlink needs to be installed first")
-			}
-		}
-
-		if v.Parser != "" {
-			if _, err := exec.LookPath(v.Parser); err != nil {
-				l.Logger.Fatalf("%s needs to be installed first", v.Parser)
-			}
+		if _, err := exec.LookPath(s.Parser); err != nil {
+			l.Logger.Fatalf("%s needs to be installed first", s.Parser)
 		}
 	}
 

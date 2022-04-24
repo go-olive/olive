@@ -10,7 +10,7 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 
 > 全自动录播、投稿工具
 >
-> 支持抖音直播、虎牙直播、B站直播、油管直播
+> 支持抖音直播、虎牙直播、B站直播、油管直播、twitch直播
 >
 > 支持B站投稿
 
@@ -25,7 +25,7 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 
 ## Usage
 
-1. 安装 **[streamlink](https://streamlink.github.io/)**（若不录制 YouTube 直播无需安装）
+1. 安装 **[streamlink](https://streamlink.github.io/)**（若不录制 YouTube、twitch 直播无需安装）
 2. 安装 **[biliup-rs](https://github.com/ForgQi/biliup-rs)**（若不上传至哔哩哔哩无需安装）
 3. 安装 [**olive**](https://github.com/go-olive/olive)
     * 可直接在 [**releases**](https://github.com/go-olive/olive/releases) 中下载相应平台的执行文件
@@ -89,12 +89,12 @@ StreamerName = "老番茄"
 
     | 下载器     | 类型    | 支持平台                |
     | ---------- | ------- | ----------------------- |
-    | streamlink | 第三方  | 油管                    |
+    | streamlink | 第三方  | 油管<br />twitch        |
     | yt-dlp     | 第三方  | 油管                    |
     | flv        | go 原生 | 抖音<br />虎牙<br />B站 |
     | ffmpeg     | 第三方  | 抖音<br />虎牙<br />B站 |
 
-    油管默认使用 streamlink
+    油管、twitch 默认使用 streamlink
 
     其他平台默认使用 flv
     

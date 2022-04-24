@@ -40,7 +40,7 @@ func (s *streamlink) Type() string {
 	return "streamlink"
 }
 
-// streamlink -o "a.mp4"  https://www.huya.com/631275 best -f
+// streamlink -o "a.mp4"  https://www.twitch.tv/nnabi best -f
 func (s *streamlink) Parse(streamURL string, out string) (err error) {
 	ext := filepath.Ext(out)
 	out = out[0:len(out)-len(ext)] + ".flv"

@@ -82,7 +82,7 @@ func (u *uploader) upload() (resp []byte, err error) {
 		u.cmd = exec.Command(
 			config.APP.UploadConfig.ExecPath,
 			"upload",
-			"--tag=olive",
+			// "--tag=olive",
 			"--limit=1",
 			"--tid=21",
 			u.task.Filepath,
@@ -91,7 +91,7 @@ func (u *uploader) upload() (resp []byte, err error) {
 		u.cmd = exec.Command(
 			config.APP.UploadConfig.ExecPath,
 			"upload",
-			"--tag=olive",
+			// "--tag=olive",
 			"-c",
 			config.APP.UploadConfig.Filepath,
 			u.task.Filepath,
