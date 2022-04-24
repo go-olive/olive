@@ -4,7 +4,7 @@
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/go-olive/olive/goreleaser?style=for-the-badge)](https://github.com/go-olive/olive/actions/workflows/release.yml)
 [![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/go-olive/olive)
 
-## Save Lives!!
+## Intro
 
 Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 
@@ -13,6 +13,15 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 > 支持抖音直播、虎牙直播、B站直播、油管直播
 >
 > 支持B站投稿
+
+## Feature
+
+* 小巧
+* 易用
+* 高效
+* 定制化
+* go 原生
+* 跨平台
 
 ## Usage
 
@@ -67,21 +76,42 @@ StreamerName = "老番茄"
 
     `{{ .RoomName }}`代表直播标题
 
-```toml
-[[Shows]]
-Platform = "bilibili"
-RoomID = "21852"
-StreamerName = "老番茄"
-# 输出的效果是 [2022-04-24 02-02-32]老番茄][嗨嗨嗨！]
-OutTmpl = "[{{ now | date \"2006-01-02 15-04-05\"}}][{{ .StreamerName }}][{{ .RoomName }}]"
-```
+    ```toml
+    [[Shows]]
+    Platform = "bilibili"
+    RoomID = "21852"
+    StreamerName = "老番茄"
+    # 输出的效果是 [2022-04-24 02-02-32]老番茄][嗨嗨嗨！]
+    OutTmpl = "[{{ now | date \"2006-01-02 15-04-05\"}}][{{ .StreamerName }}][{{ .RoomName }}]"
+    ```
 
+* **自定义视频下载器**
 
+    | 下载器     | 类型    | 支持平台                |
+    | ---------- | ------- | ----------------------- |
+    | streamlink | 第三方  | 油管                    |
+    | yt-dlp     | 第三方  | 油管                    |
+    | flv        | go 原生 | 抖音<br />虎牙<br />B站 |
+    | ffmpeg     | 第三方  | 抖音<br />虎牙<br />B站 |
+
+    油管默认使用 streamlink
+
+    其他平台默认使用 flv
+    
+    ```toml
+    [[Shows]]
+    Platform = "bilibili"
+    RoomID = "21852"
+    StreamerName = "老番茄"
+    # 指定下载器为 ffmpeg
+    Parser = "ffmpeg"
+    ```
 
 ## RoadMap
 
 * 支持 go 原生对 bilibili 的投稿
 * 支持上传至云盘
+* 支持更多的平台
 * 增加 docker image
 * 增加 mock test
 * 增加 YouTube 投稿
