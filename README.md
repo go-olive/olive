@@ -55,6 +55,29 @@ RoomID = "21852"
 StreamerName = "老番茄"
 ```
 
+## Avanced
+
+* **自定义视频文件名称**
+
+    增加 OutTmpl 配置项
+
+    `{{ now | date \"2006-01-02 15-04-05\"}}`代表日期
+
+    `{{ .StreamerName }}`代表主播名称
+
+    `{{ .RoomName }}`代表直播标题
+
+```toml
+[[Shows]]
+Platform = "bilibili"
+RoomID = "21852"
+StreamerName = "老番茄"
+# 输出的效果是 [2022-04-24 02-02-32]老番茄][嗨嗨嗨！]
+OutTmpl = "[{{ now | date \"2006-01-02 15-04-05\"}}][{{ .StreamerName }}][{{ .RoomName }}]"
+```
+
+
+
 ## RoadMap
 
 * 支持 go 原生对 bilibili 的投稿

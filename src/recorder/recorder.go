@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/sprig"
+	"github.com/go-dora/filenamify"
 	"github.com/go-olive/olive/src/config"
 	"github.com/go-olive/olive/src/engine"
 	"github.com/go-olive/olive/src/enum"
@@ -19,8 +20,13 @@ import (
 )
 
 var (
-	defaultOutTmpl = template.Must(template.New("filename").Funcs(sprig.TxtFuncMap()).
-		Parse(`[{{ .StreamerName }}][{{ .RoomName }}][{{ now | date "2006-01-02 15-04-05"}}].flv`))
+	nameFuncMap = func() template.FuncMap {
+		m := sprig.TxtFuncMap()
+		return m
+	}()
+
+	defaultOutTmpl = template.Must(template.New("filename").Funcs(nameFuncMap).
+			Parse(`[{{ .StreamerName }}][{{ .RoomName }}][{{ now | date "2006-01-02 15-04-05"}}].flv`))
 )
 
 type Recorder interface {
@@ -121,9 +127,11 @@ func (r *recorder) record() {
 
 	tmpl := defaultOutTmpl
 	if r.show.GetOutTmpl() != "" {
-		_tmpl, err := template.New("user_filename").Funcs(sprig.TxtFuncMap()).Parse(r.show.GetOutTmpl())
+		_tmpl, err := template.New("user_defined_filename").Funcs(nameFuncMap).Parse(r.show.GetOutTmpl())
 		if err == nil {
 			tmpl = _tmpl
+		} else {
+			l.Logger.Error(err)
 		}
 	}
 
@@ -135,6 +143,8 @@ func (r *recorder) record() {
 	} else {
 		out = buf.String()
 	}
+
+	out = filenamify.FilenamifyMustCompile(out)
 
 	l.Logger.WithFields(logrus.Fields{
 		"pf": r.show.GetPlatform(),
