@@ -10,7 +10,7 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 
 > 全自动录播、投稿工具
 >
-> 支持抖音直播、虎牙直播、B站直播、油管直播、twitch直播
+> 支持抖音直播、快手直播、虎牙直播、B站直播、油管直播、twitch直播
 >
 > 支持B站投稿
 
@@ -50,13 +50,17 @@ Filepath = ""
 [PlatformConfig]
 # 若有录制抖音直播，可在无痕模式非登录状态下找下面的 cookie 填入即可
 DouyinCookie = "__ac_nonce=06245c89100e7ab2dd536; __ac_signature=_02B4Z6wo00f01LjBMSAAAIDBwA.aJ.c4z1C44TWAAEx696;"
+# 若有录制快手直播，可在无痕模式非登录状态下找下面的 cookie 填入即可
+KuaishouCookie = "did=web_d86297aa2f579589b8abc2594b0ea985"
 
 [[Shows]]
 # 平台名，目前支持：
 # "bilibili"
 # "douyin"
+# "kuaishou"
 # "huya"
 # "youtube"
+# "twitch"
 Platform = "bilibili"
 # 房间号，支持字符串类型的房间号
 RoomID = "21852"
@@ -64,7 +68,7 @@ RoomID = "21852"
 StreamerName = "老番茄"
 ```
 
-## Avanced
+## Advanced
 
 * **自定义视频文件名称**
 
@@ -87,12 +91,12 @@ StreamerName = "老番茄"
 
 * **自定义视频下载器**
 
-    | 下载器     | 类型    | 支持平台                |
-    | ---------- | ------- | ----------------------- |
-    | streamlink | 第三方  | 油管<br />twitch        |
-    | yt-dlp     | 第三方  | 油管                    |
-    | flv        | go 原生 | 抖音<br />虎牙<br />B站 |
-    | ffmpeg     | 第三方  | 抖音<br />虎牙<br />B站 |
+    | 下载器     | 类型    | 支持平台                          |
+    | ---------- | ------- | --------------------------------- |
+    | streamlink | 第三方  | 油管<br />twitch                  |
+    | yt-dlp     | 第三方  | 油管                              |
+    | flv        | go 原生 | 抖音<br />快手<br />虎牙<br />B站 |
+    | ffmpeg     | 第三方  | 抖音<br />快手<br />虎牙<br />B站 |
 
     油管、twitch 默认使用 streamlink
 

@@ -52,7 +52,8 @@ type UploadConfig struct {
 }
 
 type PlatformConfig struct {
-	DouyinCookie string
+	DouyinCookie   string
+	KuaishouCookie string
 }
 
 func init() {

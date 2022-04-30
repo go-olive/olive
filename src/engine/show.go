@@ -69,9 +69,13 @@ func WithParser(parser string) ShowOption {
 
 func NewShow(platformType, roomID string, opts ...ShowOption) (Show, error) {
 	var cookie string
-	if platformType == "douyin" {
+	switch platformType {
+	case "douyin":
 		cookie = config.APP.PlatformConfig.DouyinCookie
+	case "kuaishou":
+		cookie = config.APP.PlatformConfig.KuaishouCookie
 	}
+
 	t, err := tv.New(platformType, roomID, tv.SetCookie(cookie))
 	if err != nil {
 		return nil, fmt.Errorf("Show init failed! err msg: %s", err.Error())
@@ -102,6 +106,9 @@ func (s *show) GetRoomID() string {
 }
 
 func (s *show) GetStreamerName() string {
+	if s.Streamer == "" {
+		s.Streamer, _ = s.StreamerName()
+	}
 	return s.Streamer
 }
 

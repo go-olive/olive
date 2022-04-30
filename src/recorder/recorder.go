@@ -107,7 +107,6 @@ func (r *recorder) record() {
 
 	r.show.Snap()
 	streamUrl, ok := r.show.StreamUrl()
-	roomName, _ := r.show.RoomName()
 	if !ok {
 		l.Logger.WithFields(logrus.Fields{
 			"pf": r.show.GetPlatform(),
@@ -116,6 +115,7 @@ func (r *recorder) record() {
 		time.Sleep(5 * time.Second)
 		return
 	}
+	roomName, _ := r.show.RoomName()
 
 	info := &struct {
 		StreamerName string
