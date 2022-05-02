@@ -59,7 +59,8 @@ func (wp *WorkerPool) Run() {
 }
 
 func (wp *WorkerPool) Stop() {
-	close(wp.uploadTasks)
+	// // need fix
+	// close(wp.uploadTasks)
 	for _, worker := range wp.workers {
 		worker.stop()
 		<-worker.done()
