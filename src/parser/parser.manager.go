@@ -15,7 +15,7 @@ func (p *Manager) Register(parsers ...Parser) {
 	for _, parser := range parsers {
 		_, ok := p.savers[parser.Type()]
 		if ok {
-			l.Logger.Error("[%T]Type(%s)已注册\n", p, parser.Type())
+			l.Logger.Errorf("[%T]Type(%s)已注册\n", p, parser.Type())
 		}
 		p.savers[parser.Type()] = parser
 	}

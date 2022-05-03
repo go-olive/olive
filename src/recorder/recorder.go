@@ -105,7 +105,13 @@ func (r *recorder) record() {
 		}
 	}()
 
-	r.show.Snap()
+	if err := r.show.Snap(); err != nil {
+		l.Logger.WithFields(logrus.Fields{
+			"pf": r.show.GetPlatform(),
+			"id": r.show.GetRoomID(),
+		}).Errorf("snap failed, %s", err.Error())
+		return
+	}
 	streamUrl, ok := r.show.StreamUrl()
 	if !ok {
 		l.Logger.WithFields(logrus.Fields{
