@@ -55,7 +55,6 @@ func (u *uploader) proc() {
 	}
 
 	if u.task.Tryout > 0 {
-		// possible write to a closed channel
 		UploaderWorkerPool.AddTask(u.task)
 		return
 	}

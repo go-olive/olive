@@ -32,12 +32,14 @@ type WorkerPool struct {
 	concurrency uint
 	workers     []*worker
 	uploadTasks chan *UploadTask
+	stopChan    chan struct{}
 }
 
 func NewWorkerPool(concurrency uint) *WorkerPool {
 	wp := &WorkerPool{
 		concurrency: concurrency,
 		uploadTasks: make(chan *UploadTask, 1024),
+		stopChan:    make(chan struct{}),
 	}
 	for i := uint(0); i < wp.concurrency; i++ {
 		w := newWorker(i)
@@ -48,7 +50,12 @@ func NewWorkerPool(concurrency uint) *WorkerPool {
 
 func (wp *WorkerPool) AddTask(tasks ...*UploadTask) {
 	for _, t := range tasks {
-		wp.uploadTasks <- t
+		select {
+		case <-wp.stopChan:
+			return
+		default:
+			wp.uploadTasks <- t
+		}
 	}
 }
 
@@ -59,8 +66,8 @@ func (wp *WorkerPool) Run() {
 }
 
 func (wp *WorkerPool) Stop() {
-	// // need fix
-	// close(wp.uploadTasks)
+	close(wp.stopChan)
+	close(wp.uploadTasks)
 	for _, worker := range wp.workers {
 		worker.stop()
 		<-worker.done()
