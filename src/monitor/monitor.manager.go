@@ -26,6 +26,8 @@ func (m *Manager) Stop() {
 }
 
 func (m *Manager) addMonitor(show engine.Show) error {
+	show.RemoveRecorder()
+
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
