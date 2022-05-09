@@ -76,8 +76,6 @@ func (m *monitor) refresh() {
 	var eventType enum.EventTypeID
 	if !m.roomOn && roomOn {
 		eventType = enum.EventType.AddRecorder
-	} else if m.roomOn && !roomOn {
-		eventType = enum.EventType.RemoveRecorder
 	} else {
 		return
 	}

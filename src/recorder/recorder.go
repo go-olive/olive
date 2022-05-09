@@ -2,6 +2,7 @@ package recorder
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"sync/atomic"
@@ -87,7 +88,7 @@ func (r *recorder) StartTime() time.Time {
 	return r.startTime
 }
 
-func (r *recorder) record() {
+func (r *recorder) record() error {
 	var out string
 	defer func() {
 		fi, err := os.Stat(out)
@@ -105,22 +106,30 @@ func (r *recorder) record() {
 		}
 	}()
 
-	if err := r.show.Snap(); err != nil {
+	const retry = 3
+	var streamUrl string
+	var ok bool
+	for i := 0; i < retry; i++ {
+		err := r.show.Snap()
+		if err == nil {
+			if streamUrl, ok = r.show.StreamUrl(); ok {
+				break
+			} else {
+				err = errors.New("empty stream url")
+			}
+		}
 		l.Logger.WithFields(logrus.Fields{
-			"pf": r.show.GetPlatform(),
-			"id": r.show.GetRoomID(),
+			"pf":  r.show.GetPlatform(),
+			"id":  r.show.GetRoomID(),
+			"cnt": i + 1,
 		}).Errorf("snap failed, %s", err.Error())
-		return
-	}
-	streamUrl, ok := r.show.StreamUrl()
-	if !ok {
-		l.Logger.WithFields(logrus.Fields{
-			"pf": r.show.GetPlatform(),
-			"id": r.show.GetRoomID(),
-		}).Debug("fail to get StreamURL")
+
+		if i == retry-1 {
+			return err
+		}
 		time.Sleep(5 * time.Second)
-		return
 	}
+
 	roomName, _ := r.show.RoomName()
 
 	info := &struct {
@@ -165,12 +174,20 @@ func (r *recorder) record() {
 		"id": r.show.GetRoomID(),
 	}).Infof("record stop: %+v", err)
 
-	if err != nil {
-		time.Sleep(5 * time.Second)
-	}
+	return nil
 }
 
 func (r *recorder) run() {
+	r.show.RemoveMonitor()
+
+	defer func() {
+		select {
+		case <-r.stop:
+		default:
+			r.show.AddMonitor()
+		}
+	}()
+
 	for {
 		select {
 		case <-r.stop:
@@ -181,7 +198,9 @@ func (r *recorder) run() {
 			}).Info("recorder stop")
 			return
 		default:
-			r.record()
+			if err := r.record(); err != nil {
+				return
+			}
 		}
 	}
 }
