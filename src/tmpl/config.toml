@@ -35,3 +35,8 @@ StreamerName = "LeekBeats"
 [[Shows]]
 Platform = "kuaishou"
 RoomID = "3x35ta8wpyngjwk"
+
+[[Shows]]
+Platform = "tiktok"
+RoomID = "rpd.beans"
+OutTmpl = "[{{ now | date \"2006-01-02 15-04-05\"}}][{{ .StreamerName }}]"

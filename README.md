@@ -10,7 +10,7 @@ Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
 
 > 全自动录播、投稿工具
 >
-> 支持抖音直播、快手直播、虎牙直播、B站直播、油管直播、twitch直播
+> 支持抖音直播、快手直播、虎牙直播、B站直播、油管直播、twitch直播、tiktok直播
 >
 > 支持B站投稿
 
@@ -61,6 +61,7 @@ KuaishouCookie = "did=web_d86297aa2f579589b8abc2594b0ea985"
 # "huya"
 # "youtube"
 # "twitch"
+# "tiktok"
 Platform = "bilibili"
 # 房间号，支持字符串类型的房间号
 RoomID = "21852"
@@ -91,12 +92,12 @@ StreamerName = "老番茄"
 
 * **自定义视频下载器**
 
-    | 下载器     | 类型    | 支持平台                          |
-    | ---------- | ------- | --------------------------------- |
-    | streamlink | 第三方  | 油管<br />twitch                  |
-    | yt-dlp     | 第三方  | 油管                              |
-    | flv        | go 原生 | 抖音<br />快手<br />虎牙<br />B站 |
-    | ffmpeg     | 第三方  | 抖音<br />快手<br />虎牙<br />B站 |
+    | 下载器     | 类型    | 支持平台                                      |
+    | ---------- | ------- | --------------------------------------------- |
+    | streamlink | 第三方  | 油管<br />twitch                              |
+    | yt-dlp     | 第三方  | 油管                                          |
+    | flv        | go 原生 | 抖音<br />tiktok<br />快手<br />虎牙<br />B站 |
+    | ffmpeg     | 第三方  | 抖音<br />tiktok<br />快手<br />虎牙<br />B站 |
 
     油管、twitch 默认使用 streamlink
 
