@@ -1,3 +1,5 @@
+LogLevel = 5
+
 [UploadConfig]
 Enable = false
 ExecPath = "biliup"

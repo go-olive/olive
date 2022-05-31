@@ -63,10 +63,10 @@ func (m *monitor) Stop() {
 
 func (m *monitor) refresh() {
 	if err := m.show.Snap(); err != nil {
-		// l.Logger.WithFields(logrus.Fields{
-		// 	"pf": m.show.GetPlatform(),
-		// 	"id": m.show.GetRoomID(),
-		// }).Errorf("snap failed, %s", err.Error())
+		l.Logger.WithFields(logrus.Fields{
+			"pf": m.show.GetPlatform(),
+			"id": m.show.GetRoomID(),
+		}).Tracef("snap failed, %s", err.Error())
 		return
 	}
 	_, roomOn := m.show.StreamUrl()

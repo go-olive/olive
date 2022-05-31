@@ -9,6 +9,7 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 	l "github.com/go-olive/olive/src/log"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
@@ -18,6 +19,8 @@ var (
 )
 
 type appConfig struct {
+	LogLevel logrus.Level
+
 	*UploadConfig
 	*PlatformConfig
 	Shows []*Show
@@ -87,6 +90,8 @@ func verify() {
 		l.Logger.Info("use default APP config")
 		APP = &defaultAPP
 	}
+	l.Logger.SetLevel(APP.LogLevel)
+
 	if APP.UploadConfig == nil {
 		APP.UploadConfig = &UploadConfig{}
 	}
