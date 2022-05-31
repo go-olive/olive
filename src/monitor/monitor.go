@@ -4,6 +4,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/go-olive/olive/src/config"
 	"github.com/go-olive/olive/src/dispatcher"
 	"github.com/go-olive/olive/src/engine"
 	"github.com/go-olive/olive/src/enum"
@@ -100,7 +101,7 @@ func (m *monitor) refresh() {
 
 func (m *monitor) run() {
 	t := jitterbug.New(
-		time.Second*15,
+		time.Second*time.Duration(config.APP.SnapRestSeconds),
 		&jitterbug.Norm{Stdev: time.Second * 3},
 	)
 	defer t.Stop()

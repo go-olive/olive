@@ -1,4 +1,5 @@
 LogLevel = 5
+SnapRestSeconds = 15
 
 [UploadConfig]
 Enable = false

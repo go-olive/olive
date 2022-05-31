@@ -19,7 +19,8 @@ var (
 )
 
 type appConfig struct {
-	LogLevel logrus.Level
+	LogLevel        logrus.Level
+	SnapRestSeconds uint32
 
 	*UploadConfig
 	*PlatformConfig
