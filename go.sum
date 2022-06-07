@@ -40,6 +40,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/Davincible/gotiktoklive v0.0.0-20220525135242-dda499f27e6d h1:lgHiDk84ursJQbRjemDG2iWjkdi/bKAcw80Uh3tbRS4=
 github.com/Davincible/gotiktoklive v0.0.0-20220525135242-dda499f27e6d/go.mod h1:P+iD6ERv+HzsVHS4rOL3xN6MLm8Ts/2J6K/2kRDqSJY=
+github.com/Davincible/gotiktoklive v0.0.0-20220607111918-9d1ed1997665 h1:VXTUBTs4dTtlFzyhQk2I40U9p7Pufuz2dP60SBf+fEk=
+github.com/Davincible/gotiktoklive v0.0.0-20220607111918-9d1ed1997665/go.mod h1:4GsgAld3ZSYhfXfFyROe6Kff8dkkhooay8I7qQayBzs=
 github.com/Masterminds/goutils v1.1.1 h1:5nUrii3FMTL5diU80unEVvNevw1nH4+ZV4DSLVJLSYI=
 github.com/Masterminds/goutils v1.1.1/go.mod h1:8cTjp+g8YejhMuvIA5y2vz3BpJxksy863GQaJW2MFNU=
 github.com/Masterminds/semver v1.5.0 h1:H65muMkzWKEuNDnfl9d70GUjFniHKHRbFPGBuZ3QEww=
@@ -77,6 +79,8 @@ github.com/go-olive/flv v0.0.0-20220417125559-80092be84905 h1:ZdAnmAn34asfJ3yUT6
 github.com/go-olive/flv v0.0.0-20220417125559-80092be84905/go.mod h1:lEh2giuivi5AxQBVXcakIiXxusTWwnqgqz/8IvIYh+M=
 github.com/go-olive/tv v0.2.3-0.20220606164652-0870483c28b9 h1:mT8xJ1Yjs/RQdm9iF2klMo1/zrL3FHlNoZn+y+H4DMM=
 github.com/go-olive/tv v0.2.3-0.20220606164652-0870483c28b9/go.mod h1:vyPV7rK9Fx0fUtfLxs9k2N5MNz+y90Q8foVM0sopeMY=
+github.com/go-olive/tv v0.2.3-0.20220607132016-bcf2bbf834ef h1:PZIy9BXb/ORy14GWsemSeoJKHLvNJguMfR45cGsQRcQ=
+github.com/go-olive/tv v0.2.3-0.20220607132016-bcf2bbf834ef/go.mod h1:YTMQgJAx4oJ8gYakGmKUXHZOVDS3URE+89s+tzG5B9U=
 github.com/gobwas/httphead v0.1.0 h1:exrUm0f4YX0L7EBwZHuCF4GDp8aJfVeBrlLQrs6NqWU=
 github.com/gobwas/httphead v0.1.0/go.mod h1:O/RXo79gxV8G+RqlR/otEwx4Q36zl9rqC5u12GKvMCM=
 github.com/gobwas/pool v0.2.1 h1:xfeeEhW7pwmX8nuLVlqbzVc7udMDrwetjEv+TZIz1og=
@@ -182,6 +186,7 @@ github.com/pelletier/go-toml v1.9.4 h1:tjENF6MfZAg8e4ZmZTeWaWiT2vXtsoO6+iuOjFhEC
 github.com/pelletier/go-toml v1.9.4/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pelletier/go-toml/v2 v2.0.0-beta.8 h1:dy81yyLYJDwMTifq24Oi/IslOslRrDSb3jwDggjz3Z0=
 github.com/pelletier/go-toml/v2 v2.0.0-beta.8/go.mod h1:r9LEWfGN8R5k0VXJ+0BkIe7MYkRdwZOjgMj2KwnJFUo=
+github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/sftp v1.13.1/go.mod h1:3HaPG6Dq1ILlpPZRO0HVMrsydcdLt6HRDccSgb87qRg=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

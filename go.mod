@@ -7,7 +7,7 @@ require (
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/go-dora/filenamify v0.1.0
 	github.com/go-olive/flv v0.0.0-20220417125559-80092be84905
-	github.com/go-olive/tv v0.2.3-0.20220606164652-0870483c28b9
+	github.com/go-olive/tv v0.2.3-0.20220607132016-bcf2bbf834ef
 	github.com/lthibault/jitterbug/v2 v2.2.2
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/sirupsen/logrus v1.8.1
@@ -15,7 +15,7 @@ require (
 )
 
 require (
-	github.com/Davincible/gotiktoklive v0.0.0-20220525135242-dda499f27e6d // indirect
+	github.com/Davincible/gotiktoklive v0.0.0-20220607111918-9d1ed1997665 // indirect
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/funny/slab v0.0.0-20180511031532-b1fad5e5d478 // indirect
@@ -35,6 +35,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.0-beta.8 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
