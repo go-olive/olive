@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/go-dora/filenamify v0.1.0
-	github.com/go-olive/flv v0.0.0-20220417125559-80092be84905
+	github.com/go-olive/flv v0.0.0-20220608124255-065f61015270
 	github.com/go-olive/tv v0.2.3-0.20220607132016-bcf2bbf834ef
 	github.com/lthibault/jitterbug/v2 v2.2.2
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
