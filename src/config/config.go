@@ -33,6 +33,7 @@ type Show struct {
 	StreamerName string
 	OutTmpl      string
 	Parser       string
+	SaveDir      string
 }
 
 // fix parser
