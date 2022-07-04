@@ -36,6 +36,7 @@ func (d *device) Run() {
 			engine.WithStreamerName(v.StreamerName),
 			engine.WithOutTmpl(v.OutTmpl),
 			engine.WithParser(v.Parser),
+			engine.WithSaveDir(v.SaveDir),
 		)
 		if err != nil {
 			l.Logger.WithFields(logrus.Fields{

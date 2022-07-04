@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 	"sync/atomic"
 	"text/template"
 	"time"
@@ -166,6 +168,19 @@ func (r *recorder) record() error {
 		"id": r.show.GetRoomID(),
 		"rn": roomName,
 	}).Info("record start")
+
+	saveDir := strings.TrimSpace(r.show.GetSaveDir())
+	if saveDir != "" {
+		err := os.MkdirAll(saveDir, os.ModePerm)
+		if err != nil {
+			l.Logger.WithFields(logrus.Fields{
+				"pf": r.show.GetPlatform(),
+				"id": r.show.GetRoomID(),
+			}).Errorf("mkdir failed: %s", err.Error())
+			return nil
+		}
+	}
+	out = filepath.Join(saveDir, out)
 
 	err := r.parser.Parse(streamUrl, out)
 

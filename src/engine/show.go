@@ -23,6 +23,7 @@ type Show interface {
 	GetRoomID() string
 	GetStreamerName() string
 	GetOutTmpl() string
+	GetSaveDir() string
 
 	AddMonitor() error
 	RemoveMonitor() error
@@ -41,6 +42,7 @@ type show struct {
 	Streamer string
 	OutTmpl  string
 	Parser   string
+	SaveDir  string
 	enum.ShowTaskStatusID
 	stop chan struct{}
 
@@ -64,6 +66,12 @@ func WithOutTmpl(tmpl string) ShowOption {
 func WithParser(parser string) ShowOption {
 	return func(s *show) {
 		s.Parser = parser
+	}
+}
+
+func WithSaveDir(saveDir string) ShowOption {
+	return func(s *show) {
+		s.SaveDir = saveDir
 	}
 }
 
@@ -122,6 +130,10 @@ func (s *show) GetOutTmpl() string {
 
 func (s *show) GetParser() string {
 	return s.Parser
+}
+
+func (s *show) GetSaveDir() string {
+	return s.SaveDir
 }
 
 func (s *show) genID() ID {

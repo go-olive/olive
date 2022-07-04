@@ -67,6 +67,8 @@ Platform = "bilibili"
 RoomID = "21852"
 # 主播名称
 StreamerName = "老番茄"
+# 文件保存路径，默认为当前文件夹
+SaveDir = ""
 ```
 
 ## Advanced
@@ -86,7 +88,7 @@ StreamerName = "老番茄"
     Platform = "bilibili"
     RoomID = "21852"
     StreamerName = "老番茄"
-    # 输出的效果是 [2022-04-24 02-02-32]老番茄][嗨嗨嗨！]
+    # 输出的效果是 [2022-04-24 02-02-32][老番茄][嗨嗨嗨！]
     OutTmpl = "[{{ now | date \"2006-01-02 15-04-05\"}}][{{ .StreamerName }}][{{ .RoomName }}]"
     ```
 
