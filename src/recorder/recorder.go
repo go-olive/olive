@@ -179,6 +179,8 @@ func (r *recorder) record() error {
 			}).Errorf("mkdir failed: %s", err.Error())
 			return nil
 		}
+	} else {
+		saveDir, _ = os.Getwd()
 	}
 	out = filepath.Join(saveDir, out)
 
