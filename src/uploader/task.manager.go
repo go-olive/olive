@@ -1,6 +1,8 @@
 package uploader
 
-var SharedTaskMux = &defaultTaskMux
+import "os/exec"
+
+var DefaultTaskMux = &defaultTaskMux
 
 var defaultTaskMux TaskMux
 
@@ -31,16 +33,25 @@ func (mux *TaskMux) RegisterHandler(pattern string, handler TaskHandler) {
 	mux.m[pattern] = e
 }
 
-func (this *TaskMux) GetHandler(pattern string) {
+func (mux *TaskMux) MustGetHandler(pattern string) TaskHandler {
+	if handler, ok := mux.m[pattern]; ok {
+		return handler.h
+	}
+	return DefaultHandlerFunc
+}
 
+type Task struct {
+	Filepath string
+	StopChan chan struct{}
+	Cmd      *exec.Cmd
 }
 
 type TaskHandler interface {
-	Process(*UploadTask) error
+	Process(t *Task) error
 }
 
-type TaskHandlerFunc func(t *UploadTask) error
+type TaskHandlerFunc func(t *Task) error
 
-func (f TaskHandlerFunc) Process(t *UploadTask) error {
+func (f TaskHandlerFunc) Process(t *Task) error {
 	return f(t)
 }

@@ -225,10 +225,9 @@ func (r *recorder) Done() <-chan struct{} {
 }
 
 func (r *recorder) SubmitUploadTask(filepath string, cmds []*exec.Cmd) {
-	if len(cmds) > 0 {
-		uploader.UploaderWorkerPool.AddTask(&uploader.UploadTask{
+	if len(cmds) > 0 && filepath != "" {
+		uploader.UploaderWorkerPool.AddTask(&uploader.TaskGroup{
 			Filepath: filepath,
-			Tryout:   2,
 			PostCmds: cmds,
 		})
 	}

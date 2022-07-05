@@ -37,6 +37,7 @@ func (d *device) Run() {
 			engine.WithOutTmpl(v.OutTmpl),
 			engine.WithParser(v.Parser),
 			engine.WithSaveDir(v.SaveDir),
+			engine.WithPostCmds(v.PostCmds),
 		)
 		if err != nil {
 			l.Logger.WithFields(logrus.Fields{
