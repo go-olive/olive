@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"sync/atomic"
@@ -13,7 +14,6 @@ import (
 
 	"github.com/Masterminds/sprig"
 	"github.com/go-dora/filenamify"
-	"github.com/go-olive/olive/src/config"
 	"github.com/go-olive/olive/src/engine"
 	"github.com/go-olive/olive/src/enum"
 	l "github.com/go-olive/olive/src/log"
@@ -103,9 +103,7 @@ func (r *recorder) record() error {
 			return
 		}
 
-		if config.APP.UploadConfig.Enable {
-			r.SubmitUploadTask(out)
-		}
+		r.SubmitUploadTask(out, r.show.GetPostCmds())
 	}()
 
 	const retry = 3
@@ -226,9 +224,12 @@ func (r *recorder) Done() <-chan struct{} {
 	return r.done
 }
 
-func (r *recorder) SubmitUploadTask(filepath string) {
-	uploader.UploaderWorkerPool.AddTask(&uploader.UploadTask{
-		Filepath: filepath,
-		Tryout:   2,
-	})
+func (r *recorder) SubmitUploadTask(filepath string, cmds []*exec.Cmd) {
+	if len(cmds) > 0 {
+		uploader.UploaderWorkerPool.AddTask(&uploader.UploadTask{
+			Filepath: filepath,
+			Tryout:   2,
+			PostCmds: cmds,
+		})
+	}
 }

@@ -22,6 +22,7 @@ type Uploader interface {
 type UploadTask struct {
 	Filepath string
 	Tryout   int64
+	PostCmds []*exec.Cmd
 }
 
 type uploader struct {
