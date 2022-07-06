@@ -2,6 +2,7 @@ package uploader
 
 import (
 	"os/exec"
+	"strings"
 	"sync"
 
 	l "github.com/go-olive/olive/src/log"
@@ -53,8 +54,9 @@ func (u *uploader) proc() {
 			)
 			if err != nil {
 				l.Logger.WithFields(logrus.Fields{
-					"postCmd":  postCmd.String(),
-					"filepath": u.taskGroup.Filepath,
+					"postCmdPath": postCmd.Path,
+					"postCmdArgs": strings.Join(postCmd.Args, " "),
+					"filepath":    u.taskGroup.Filepath,
 				}).Error(err)
 				return
 			}
