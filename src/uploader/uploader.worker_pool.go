@@ -1,6 +1,7 @@
 package uploader
 
 import (
+	"os/exec"
 	"path/filepath"
 
 	"github.com/go-olive/olive/src/config"
@@ -18,11 +19,13 @@ func init() {
 	if err != nil {
 		l.Logger.Fatal(err)
 	}
-	tasks := make([]*UploadTask, len(files))
+	tasks := make([]*TaskGroup, len(files))
 	for i, filepath := range files {
-		tasks[i] = &UploadTask{
+		tasks[i] = &TaskGroup{
 			Filepath: filepath,
-			Tryout:   2,
+			PostCmds: []*exec.Cmd{
+				{Path: olivebiliup},
+			},
 		}
 	}
 	UploaderWorkerPool.AddTask(tasks...)
@@ -31,14 +34,14 @@ func init() {
 type WorkerPool struct {
 	concurrency uint
 	workers     []*worker
-	uploadTasks chan *UploadTask
+	uploadTasks chan *TaskGroup
 	stopChan    chan struct{}
 }
 
 func NewWorkerPool(concurrency uint) *WorkerPool {
 	wp := &WorkerPool{
 		concurrency: concurrency,
-		uploadTasks: make(chan *UploadTask, 1024),
+		uploadTasks: make(chan *TaskGroup, 1024),
 		stopChan:    make(chan struct{}),
 	}
 	for i := uint(0); i < wp.concurrency; i++ {
@@ -48,7 +51,7 @@ func NewWorkerPool(concurrency uint) *WorkerPool {
 	return wp
 }
 
-func (wp *WorkerPool) AddTask(tasks ...*UploadTask) {
+func (wp *WorkerPool) AddTask(tasks ...*TaskGroup) {
 	for _, t := range tasks {
 		select {
 		case <-wp.stopChan:

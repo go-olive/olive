@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"os/exec"
 	"time"
 
 	"github.com/go-olive/olive/src/config"
@@ -24,6 +25,7 @@ type Show interface {
 	GetStreamerName() string
 	GetOutTmpl() string
 	GetSaveDir() string
+	GetPostCmds() []*exec.Cmd
 
 	AddMonitor() error
 	RemoveMonitor() error
@@ -43,6 +45,7 @@ type show struct {
 	OutTmpl  string
 	Parser   string
 	SaveDir  string
+	PostCmds []*exec.Cmd
 	enum.ShowTaskStatusID
 	stop chan struct{}
 
@@ -72,6 +75,12 @@ func WithParser(parser string) ShowOption {
 func WithSaveDir(saveDir string) ShowOption {
 	return func(s *show) {
 		s.SaveDir = saveDir
+	}
+}
+
+func WithPostCmds(postCmds []*exec.Cmd) ShowOption {
+	return func(s *show) {
+		s.PostCmds = postCmds
 	}
 }
 
@@ -134,6 +143,10 @@ func (s *show) GetParser() string {
 
 func (s *show) GetSaveDir() string {
 	return s.SaveDir
+}
+
+func (s *show) GetPostCmds() []*exec.Cmd {
+	return s.PostCmds
 }
 
 func (s *show) genID() ID {

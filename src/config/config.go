@@ -34,6 +34,7 @@ type Show struct {
 	OutTmpl      string
 	Parser       string
 	SaveDir      string
+	PostCmds     []*exec.Cmd
 }
 
 // fix parser

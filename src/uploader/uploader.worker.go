@@ -19,7 +19,7 @@ func newWorker(id uint) *worker {
 	}
 }
 
-func (w *worker) start(tasks <-chan *UploadTask) {
+func (w *worker) start(tasks <-chan *TaskGroup) {
 	defer close(w.doneChan)
 
 	for {
