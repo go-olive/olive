@@ -10,6 +10,9 @@ builds:
     main: ./src/cmd/olive
     env:
       - CGO_ENABLED=0
+      
+    ldflags:
+      - -s -w -X github.com/go-olive/olive/src/config.AppVersion={{.Tag}}
 
     goos:
       - linux
