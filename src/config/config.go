@@ -21,12 +21,25 @@ var (
 )
 
 type appConfig struct {
-	LogLevel        logrus.Level
-	SnapRestSeconds uint32
+	LogLevel          logrus.Level
+	SnapRestSeconds   uint
+	CommanderPoolSize uint
 
 	*UploadConfig
 	*PlatformConfig
 	Shows []*Show
+}
+
+func (this *appConfig) checkAndFix() {
+	if this.LogLevel == 0 {
+		this.LogLevel = logrus.DebugLevel
+	}
+	if this.SnapRestSeconds == 0 {
+		this.SnapRestSeconds = 15
+	}
+	if this.CommanderPoolSize == 0 {
+		this.CommanderPoolSize = 1
+	}
 }
 
 type Show struct {
@@ -108,6 +121,8 @@ func verify() {
 		l.Logger.Info("use default APP config")
 		APP = &defaultAPP
 	}
+	APP.checkAndFix()
+
 	l.Logger.SetLevel(APP.LogLevel)
 
 	if APP.UploadConfig == nil {
