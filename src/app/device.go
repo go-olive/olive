@@ -31,6 +31,8 @@ func NewDevice() IDevice {
 }
 
 func (d *device) Run() {
+	l.Logger.Infof("Powered by go-olive/olive %s", config.AppVersion)
+
 	for _, v := range config.APP.Shows {
 		s, err := engine.NewShow(v.Platform, v.RoomID,
 			engine.WithStreamerName(v.StreamerName),

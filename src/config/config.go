@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"flag"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -14,6 +15,7 @@ import (
 )
 
 var (
+	AppVersion string
 	APP        *appConfig
 	defaultAPP = appConfig{}
 )
@@ -63,18 +65,31 @@ type PlatformConfig struct {
 }
 
 func init() {
-	path, err := os.Getwd()
-	if err != nil {
-		l.Logger.Fatal(err)
-	}
-	appCfgFilePath := filepath.Join(path, "config.toml")
-
-	flag.StringVar(&appCfgFilePath, "c", appCfgFilePath, "config.toml配置文件存放路径")
+	var (
+		appCfgFilePath string
+		version        bool
+	)
+	flag.BoolVar(&version, "v", version, "print olive version")
+	flag.StringVar(&appCfgFilePath, "c", appCfgFilePath, "set config.toml filepath")
 	flag.Parse()
 
+	if version {
+		fmt.Println(AppVersion)
+		os.Exit(0)
+	}
+
+	var Usage = func() {
+		fmt.Printf("Powered by go-olive/olive %s\n", AppVersion)
+		fmt.Println("Usage:")
+		flag.PrintDefaults()
+	}
+	if appCfgFilePath == "" {
+		Usage()
+		os.Exit(0)
+	}
+
 	viper.SetConfigFile(appCfgFilePath)
-	err = viper.ReadInConfig()
-	if err != nil {
+	if err := viper.ReadInConfig(); err != nil {
 		l.Logger.WithField("err", err.Error()).
 			Fatal("load config file failed")
 	}
