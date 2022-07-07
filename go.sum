@@ -38,8 +38,6 @@ cloud.google.com/go/storage v1.14.0/go.mod h1:GrKmX003DSIwi9o29oFT7YDnHYwZoctc3f
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/Davincible/gotiktoklive v0.0.0-20220525135242-dda499f27e6d h1:lgHiDk84ursJQbRjemDG2iWjkdi/bKAcw80Uh3tbRS4=
-github.com/Davincible/gotiktoklive v0.0.0-20220525135242-dda499f27e6d/go.mod h1:P+iD6ERv+HzsVHS4rOL3xN6MLm8Ts/2J6K/2kRDqSJY=
 github.com/Davincible/gotiktoklive v0.0.0-20220607111918-9d1ed1997665 h1:VXTUBTs4dTtlFzyhQk2I40U9p7Pufuz2dP60SBf+fEk=
 github.com/Davincible/gotiktoklive v0.0.0-20220607111918-9d1ed1997665/go.mod h1:4GsgAld3ZSYhfXfFyROe6Kff8dkkhooay8I7qQayBzs=
 github.com/Masterminds/goutils v1.1.1 h1:5nUrii3FMTL5diU80unEVvNevw1nH4+ZV4DSLVJLSYI=
@@ -75,14 +73,10 @@ github.com/go-dora/filenamify v0.1.0/go.mod h1:NlTLUNYyaz7JQX5RR7R+8arojJwFybUUQ
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
-github.com/go-olive/flv v0.0.0-20220417125559-80092be84905 h1:ZdAnmAn34asfJ3yUT6NDYR5WQHgWyFpEogjf/aj2xkI=
-github.com/go-olive/flv v0.0.0-20220417125559-80092be84905/go.mod h1:lEh2giuivi5AxQBVXcakIiXxusTWwnqgqz/8IvIYh+M=
 github.com/go-olive/flv v0.0.0-20220608124255-065f61015270 h1:UgTTviMEsv9GieGUBZk/qi6c5vj4r0G4HtdJKCmour4=
 github.com/go-olive/flv v0.0.0-20220608124255-065f61015270/go.mod h1:7Rb0AU+4dKJNODHLz6PGeiVdOR/MUoG6Hhfing5zJx4=
-github.com/go-olive/tv v0.2.3-0.20220606164652-0870483c28b9 h1:mT8xJ1Yjs/RQdm9iF2klMo1/zrL3FHlNoZn+y+H4DMM=
-github.com/go-olive/tv v0.2.3-0.20220606164652-0870483c28b9/go.mod h1:vyPV7rK9Fx0fUtfLxs9k2N5MNz+y90Q8foVM0sopeMY=
-github.com/go-olive/tv v0.2.3-0.20220607132016-bcf2bbf834ef h1:PZIy9BXb/ORy14GWsemSeoJKHLvNJguMfR45cGsQRcQ=
-github.com/go-olive/tv v0.2.3-0.20220607132016-bcf2bbf834ef/go.mod h1:YTMQgJAx4oJ8gYakGmKUXHZOVDS3URE+89s+tzG5B9U=
+github.com/go-olive/tv v0.3.0 h1:aweSDa0khAAWAoyXdH8h1+heA+0MhqIGWUpQ6IKZ5to=
+github.com/go-olive/tv v0.3.0/go.mod h1:YTMQgJAx4oJ8gYakGmKUXHZOVDS3URE+89s+tzG5B9U=
 github.com/gobwas/httphead v0.1.0 h1:exrUm0f4YX0L7EBwZHuCF4GDp8aJfVeBrlLQrs6NqWU=
 github.com/gobwas/httphead v0.1.0/go.mod h1:O/RXo79gxV8G+RqlR/otEwx4Q36zl9rqC5u12GKvMCM=
 github.com/gobwas/pool v0.2.1 h1:xfeeEhW7pwmX8nuLVlqbzVc7udMDrwetjEv+TZIz1og=
