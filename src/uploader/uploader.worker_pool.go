@@ -8,7 +8,7 @@ import (
 	l "github.com/go-olive/olive/src/log"
 )
 
-var UploaderWorkerPool = NewWorkerPool(1)
+var UploaderWorkerPool = NewWorkerPool(config.APP.CommanderPoolSize)
 
 func init() {
 	if !config.APP.UploadConfig.Enable {
