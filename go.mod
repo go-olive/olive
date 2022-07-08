@@ -7,7 +7,7 @@ require (
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/go-dora/filenamify v0.1.0
 	github.com/go-olive/flv v0.0.0-20220608124255-065f61015270
-	github.com/go-olive/tv v0.3.0
+	github.com/go-olive/tv v0.3.1-0.20220708163502-290da2b22ef5
 	github.com/lthibault/jitterbug/v2 v2.2.2
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/sirupsen/logrus v1.8.1

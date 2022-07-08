@@ -25,6 +25,7 @@ func init() {
 			Filepath: filepath,
 			PostCmds: []*exec.Cmd{
 				{Path: olivebiliup},
+				{Path: olivetrash},
 			},
 		}
 	}
