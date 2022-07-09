@@ -26,11 +26,14 @@ type Show interface {
 	GetOutTmpl() string
 	GetSaveDir() string
 	GetPostCmds() []*exec.Cmd
+	GetSplitRule() *config.SplitRule
+	SatisfySplitRule(time.Time, string) bool
 
 	AddMonitor() error
 	RemoveMonitor() error
 	AddRecorder() error
 	RemoveRecorder() error
+	RestartRecorder()
 
 	NewParser() (parser.Parser, error)
 
@@ -38,14 +41,15 @@ type Show interface {
 }
 
 type show struct {
-	ID       ID
-	Platform string
-	RoomID   string
-	Streamer string
-	OutTmpl  string
-	Parser   string
-	SaveDir  string
-	PostCmds []*exec.Cmd
+	ID        ID
+	Platform  string
+	RoomID    string
+	Streamer  string
+	OutTmpl   string
+	Parser    string
+	SaveDir   string
+	PostCmds  []*exec.Cmd
+	SplitRule *config.SplitRule
 	enum.ShowTaskStatusID
 	stop chan struct{}
 
@@ -81,6 +85,12 @@ func WithSaveDir(saveDir string) ShowOption {
 func WithPostCmds(postCmds []*exec.Cmd) ShowOption {
 	return func(s *show) {
 		s.PostCmds = postCmds
+	}
+}
+
+func WithSplitRule(rule *config.SplitRule) ShowOption {
+	return func(s *show) {
+		s.SplitRule = rule
 	}
 }
 
@@ -149,6 +159,14 @@ func (s *show) GetPostCmds() []*exec.Cmd {
 	return s.PostCmds
 }
 
+func (s *show) GetSplitRule() *config.SplitRule {
+	return s.SplitRule
+}
+
+func (s *show) SatisfySplitRule(startTime time.Time, out string) bool {
+	return s.SplitRule.Satisfy(startTime, out)
+}
+
 func (s *show) genID() ID {
 	h := md5.New()
 	b := []byte(fmt.Sprintf("%s%s%d", s.Platform, s.RoomID, time.Now().UnixNano()))
@@ -182,6 +200,11 @@ func (s *show) AddRecorder() error {
 func (s *show) RemoveRecorder() error {
 	e := dispatcher.NewEvent(enum.EventType.RemoveRecorder, s)
 	return dispatcher.SharedManager.Dispatch(e)
+}
+
+func (s *show) RestartRecorder() {
+	s.RemoveRecorder()
+	s.AddRecorder()
 }
 
 func (s *show) Stop() {

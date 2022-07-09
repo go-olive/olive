@@ -40,6 +40,7 @@ func (d *device) Run() {
 			engine.WithParser(v.Parser),
 			engine.WithSaveDir(v.SaveDir),
 			engine.WithPostCmds(v.PostCmds),
+			engine.WithSplitRule(v.SplitRule),
 		)
 		if err != nil {
 			l.Logger.WithFields(logrus.Fields{
