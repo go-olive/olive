@@ -24,7 +24,8 @@ var (
 		CommanderPoolSize: 1,
 		UploadConfig:      &UploadConfig{},
 		PlatformConfig: &PlatformConfig{
-			DouyinCookie: "__ac_nonce=062c84d05004a461cf7f2; __ac_signature=_02B4Z6wo00f01NAKk1QAAIDBqMR4UNttsUjQKpfAAFbQjTrG-JmICfTUMMVzKe3crg5Fk4y4e4DGURjAV4VW2B6WwXdqq3UC1c0waQMKIjhZn5Ve1LxiGmyDuVlSBN7aRhuGfEIwwfxXcYhA4e;",
+			DouyinCookie:   "__ac_nonce=062c84d05004a461cf7f2; __ac_signature=_02B4Z6wo00f01NAKk1QAAIDBqMR4UNttsUjQKpfAAFbQjTrG-JmICfTUMMVzKe3crg5Fk4y4e4DGURjAV4VW2B6WwXdqq3UC1c0waQMKIjhZn5Ve1LxiGmyDuVlSBN7aRhuGfEIwwfxXcYhA4e;",
+			KuaishouCookie: "did=web_e7367cd09866e986065dd2e0f93630fe",
 		},
 	}
 
@@ -68,8 +69,12 @@ func (this *appConfig) checkAndFix() {
 	if this.DouyinCookie == "" {
 		this.DouyinCookie = defaultAPP.DouyinCookie
 	}
+	if this.KuaishouCookie == "" {
+		this.KuaishouCookie = defaultAPP.KuaishouCookie
+	}
 	if cookie != "" {
 		this.DouyinCookie = cookie
+		this.KuaishouCookie = cookie
 	}
 }
 
@@ -110,10 +115,10 @@ type PlatformConfig struct {
 
 func init() {
 	flag.BoolVar(&version, "v", version, "print olive version")
-	flag.StringVar(&appCfgFilePath, "c", appCfgFilePath, "set config.toml filepath")
+	flag.StringVar(&appCfgFilePath, "f", appCfgFilePath, "set config.toml filepath")
 
 	flag.StringVar(&url, "u", url, "room url")
-	flag.StringVar(&cookie, "sc", "", "site cookie")
+	flag.StringVar(&cookie, "c", "", "http cookie")
 
 	flag.Parse()
 
