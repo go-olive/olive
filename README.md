@@ -1,134 +1,253 @@
-# olive
+<p align="center">
+  <img src="https://raw.githubusercontent.com/go-olive/brand-kit/main/banner/banner-01.png" />
+</p>
 
 [![GoDoc](https://img.shields.io/badge/GoDoc-Reference-blue?style=for-the-badge&logo=go)](https://pkg.go.dev/github.com/go-olive/olive?tab=doc)
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/go-olive/olive/goreleaser?style=for-the-badge)](https://github.com/go-olive/olive/actions/workflows/release.yml)
 [![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/go-olive/olive)
+[![Github All Releases](https://img.shields.io/github/downloads/go-olive/olive/total.svg?style=for-the-badge)](https://github.com/go-olive/olive/releases)
 
-## Intro
-
-Lives are delicate and fleeting creatures, waiting to be captured by us. ❤
-
-> 全自动录播、投稿工具
->
-> 支持抖音直播、快手直播、虎牙直播、B站直播、油管直播、twitch直播、tiktok直播
->
-> 支持B站投稿
+Olive is a powerful engine which monitors streamers status and automatically records when they're online. Helps you catch every live stream.
 
 ## Feature
 
-* 小巧
-* 易用
-* 高效
-* 定制化
-* go 原生
-* 跨平台
+* Small
+* Easy-to-use
+* Efficient
+* Extensible
+* Customizable
+* Cross-platform
+
+## Installation
+
+* build from source
+
+    `go install github.com/go-olive/olive/src/cmd/olive@latest`
+
+* download from [**releases**](https://github.com/go-olive/olive/releases)
+
+## Quickstart
+
+Get **olive** to work simply by passing the live url.
+
+```sh
+$ olive -u https://www.huya.com/518512
+```
 
 ## Usage
 
-1. 安装 **[streamlink](https://streamlink.github.io/)**（若不录制 YouTube、twitch 直播无需安装）
-2. 安装 **[biliup-rs](https://github.com/ForgQi/biliup-rs)**（若不上传至哔哩哔哩无需安装）
-3. 安装 [**olive**](https://github.com/go-olive/olive)
-    * 可直接在 [**releases**](https://github.com/go-olive/olive/releases) 中下载相应平台的执行文件
-    * 或者本地构建`go install github.com/go-olive/olive/src/cmd/olive@latest`
-4. 命令行中运行
-    * 直接下载可执行文件`/path/to/olive -c /path/to/config.toml`
-    * 本地构建`olive -c /path/to/config.toml`
-
-## Config.toml
+Start **olive** by using config file, provide you more options.
 
 template file to reference [config.toml](src/tmpl/config.toml)
 
+```sh
+$ olive -f /path/to/config.toml
+```
+
+### Minimal configuration
+
+```toml
+[[Shows]]
+# platform name
+Platform = "bilibili"
+# room id
+RoomID = "21852"
+# streamer name
+StreamerName = "old-tomato"
+```
+
+### Custom video file name
+
+Add config `OutTmpl`
+
+* Date: `{{ now | date \"2006-01-02 15-04-05\"}}`
+
+* Streame Name: `{{ .StreamerName }}`
+
+* Stream Title: `{{ .RoomName }}`
+
+```toml
+[[Shows]]
+Platform = "bilibili"
+RoomID = "21852"
+StreamerName = "old-tomato"
+# The file name will be `[2022-04-24 02-02-32][old-tomato][Hi!]`
+OutTmpl = "[{{ now | date \"2006-01-02 15-04-05\"}}][{{ .StreamerName }}][{{ .RoomName }}]"
+```
+
+### Custom video save location
+
+Add config `SaveDir`
+
+```toml
+[[Shows]]
+Platform = "bilibili"
+RoomID = "21852"
+StreamerName = "old-tomato"
+SaveDir = "/Users/luxcgo/Videos"
+```
+
+### Custom video downloader
+
+Add config `Parser`
+
+```toml
+[[Shows]]
+Platform = "bilibili"
+RoomID = "21852"
+StreamerName = "old-tomato"
+# Use `ffmpeg` as video downloader
+Parser = "ffmpeg"
+```
+
+reference table
+
+| Parser     | Type        | Platform                  |
+| ---------- | ----------- | ------------------------- |
+| streamlink | third-party | YouTube/Twitch            |
+| yt-dlp     | third-party | YouTube                   |
+| ffmpeg     | third-party | Other than YouTube/Twitch |
+| Flv        | Native      | Other than YouTube/Twitch |
+
+> You have to manually download the third-party `Parser` locally in order to use them.
+>
+> The deault `Parser` use `flv` which has already beed embedded into the olive , no need to download.
+
+### Exec cmds after recording
+
+Add config `Shows.PostCmds`, you can add a series of commands under any `[[Shows]]`.
+
+The commands will be executed automatically when the live ends , and if any command fails to execute in the middle, it will exit early.
+
+**olive** provides several out-of-box commands that have been implemented internally. (set config `Path` under `[[Shows.PostCmds]]`)
+
+* `olivearchive`: Move the file to the archive folder under the current directory.
+* `olivetrash`: Delete the file (unrecoverable).
+* `olivebiliup`: If `UploadConfig` is configured, it will automatically upload to `bilibili` according to the configuration, if the upload fails it will execute `olivearchive`.
+    * this requires to install [biliup-rs](https://github.com/ForgQi/biliup-rs) locally, and set `ExecPath` as the excutable filepath.
+* `oliveshell`: split normal shell commands as an array of strings, and put them in config `Args` .
+    * embed video file path as env variable. Can be used by `$FILE_PATH`
+
+Config example:
+
 ```toml
 [UploadConfig]
-# 是否上传到 bilibili
-Enable = false
-# biliup-rs 可执行文件的路径
+Enable = true
+ExecPath = "/xxx/biliup"
+Filepath = ""
+
+[[Shows]]
+Platform = "bilibili"
+RoomID = "21852"
+StreamerName = "test"
+OutTmpl = "[test][{{ now | date \"2006-01-02 15-04-05\"}}].flv"
+[[Shows.PostCmds]]
+Path = "oliveshell"
+Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
+[[Shows.PostCmds]]
+Path = "olivebiliup"
+[[Shows.PostCmds]]
+Path = "olivetrash"
+```
+
+Simulation:
+
+1. Live ends.
+2. Execute the custom command `/bin/sh -c "echo $FILE_PATH" `.
+3. If the last command is executed successfully, execute the built-in command `olivebiliup `.
+4. If the last command is executed successfully, execute the built-in command `olivetrash `.
+
+### Split video files
+
+When any of the following condition is met, **olive** will start a new file.
+
+* maximum video duration: `Duration`
+    * A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m".
+    * Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+* maximum video filesize (byte): `Filesize`
+
+```toml
+[[Shows]]
+Platform = "huya"
+RoomID = "518512"
+StreamerName = "250"
+[Shows.SplitRule]
+# 10 MB
+FileSize = 10000000
+# 1 minute
+Duration = "1m"
+[[Shows.PostCmds]]
+Path = "oliveshell"
+Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
+```
+
+## Supported platforms
+
+| Platform |
+| -------- |
+| bilibili |
+| douyin   |
+| huya     |
+| kuaishou |
+| tiktok   |
+| twitch   |
+| youtube  |
+
+**olive** relies on **[olivetv](https://github.com/go-olive/tv)** to support above sites. If yours is not on the list above, welcome to submit an issue or a pr at **[olivetv](https://github.com/go-olive/tv)**.
+
+
+## Config.toml
+
+A config file with every feature involved.
+
+```toml
+LogLevel = 5
+SnapRestSeconds = 15
+SplitRestSeconds = 60
+CommanderPoolSize = 1
+
+[UploadConfig]
+Enable = true
 ExecPath = "biliup"
-# biliup-rs 配置文件路径，为空的话走默认配置
 Filepath = ""
 
 [PlatformConfig]
-# 若有录制抖音直播，可在无痕模式非登录状态下找下面的 cookie 填入即可
 DouyinCookie = "__ac_nonce=06245c89100e7ab2dd536; __ac_signature=_02B4Z6wo00f01LjBMSAAAIDBwA.aJ.c4z1C44TWAAEx696;"
-# 若有录制快手直播，可在无痕模式非登录状态下找下面的 cookie 填入即可
 KuaishouCookie = "did=web_d86297aa2f579589b8abc2594b0ea985"
 
 [[Shows]]
-# 平台名，目前支持：
-# "bilibili"
-# "douyin"
-# "kuaishou"
-# "huya"
-# "youtube"
-# "twitch"
-# "tiktok"
+Platform = "huya"
+RoomID = "518512"
+StreamerName = "250"
+
+[[Shows]]
 Platform = "bilibili"
-# 房间号，支持字符串类型的房间号
 RoomID = "21852"
-# 主播名称
-StreamerName = "老番茄"
-# 文件保存路径，默认为当前文件夹
-SaveDir = ""
+StreamerName = "old-tomato"
+SaveDir = "/Users/luxcgo/Videos"
+Parser = "flv"
+OutTmpl = "[{{ now | date \"2006-01-02 15-04-05\"}}][{{ .StreamerName }}]"
+[Shows.SplitRule]
+# 1 GB
+FileSize = 1024000000
+# 1 hour
+Duration = "1h"
+[[Shows.PostCmds]]
+Path = "oliveshell"
+Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
+[[Shows.PostCmds]]
+Path = "olivebiliup"
+[[Shows.PostCmds]]
+Path = "olivetrash"
 ```
-
-## Advanced
-
-* **自定义视频文件名称**
-
-    增加 OutTmpl 配置项
-
-    `{{ now | date \"2006-01-02 15-04-05\"}}`代表日期
-
-    `{{ .StreamerName }}`代表主播名称
-
-    `{{ .RoomName }}`代表直播标题
-
-    ```toml
-    [[Shows]]
-    Platform = "bilibili"
-    RoomID = "21852"
-    StreamerName = "老番茄"
-    # 输出的效果是 [2022-04-24 02-02-32][老番茄][嗨嗨嗨！]
-    OutTmpl = "[{{ now | date \"2006-01-02 15-04-05\"}}][{{ .StreamerName }}][{{ .RoomName }}]"
-    ```
-
-* **自定义视频下载器**
-
-    | 下载器     | 类型    | 支持平台                                      |
-    | ---------- | ------- | --------------------------------------------- |
-    | streamlink | 第三方  | 油管<br />twitch                              |
-    | yt-dlp     | 第三方  | 油管                                          |
-    | flv        | go 原生 | 抖音<br />tiktok<br />快手<br />虎牙<br />B站 |
-    | ffmpeg     | 第三方  | 抖音<br />tiktok<br />快手<br />虎牙<br />B站 |
-
-    油管、twitch 默认使用 streamlink
-
-    其他平台默认使用 flv
-    
-    ```toml
-    [[Shows]]
-    Platform = "bilibili"
-    RoomID = "21852"
-    StreamerName = "老番茄"
-    # 指定下载器为 ffmpeg
-    Parser = "ffmpeg"
-    ```
 
 ## RoadMap
 
-* 支持 go 原生对 bilibili 的投稿
-* 支持上传至云盘
-* 支持更多的平台
-* 增加 docker image
-* 增加 mock test
-* 增加 YouTube 投稿
-* 增加对程序运行状况的监控
-* 增加网页端
+* Add docker image
+* Add mock test
+* Add web ui
+* Add prometheus and grafana
 
-## Credits
+## License
 
-* [OliveTV](https://github.com/go-olive/tv)
-* [bililive-go](https://github.com/hr3lxphr6j/bililive-go)
-* [biliup-rs](https://github.com/ForgQi/biliup-rs)
-* [streamlink](https://streamlink.github.io/)
-
+This project is under the MIT License. See the [LICENSE](https://github.com/go-olive/olive/blob/main/LICENSE) file for the full license text.
