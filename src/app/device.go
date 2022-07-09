@@ -52,6 +52,7 @@ func (d *device) Run() {
 		s.AddMonitor()
 	}
 	uploader.UploaderWorkerPool.Run()
+	go recorder.RecorderManager.Split()
 	go d.listenSignal()
 	<-d.done
 }
