@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 
 	"github.com/fsnotify/fsnotify"
 	l "github.com/go-olive/olive/src/log"
@@ -21,6 +22,7 @@ var (
 	defaultAPP = &appConfig{
 		LogLevel:          logrus.DebugLevel,
 		SnapRestSeconds:   15,
+		SplitRestSeconds:  60,
 		CommanderPoolSize: 1,
 		UploadConfig:      &UploadConfig{},
 		PlatformConfig: &PlatformConfig{
@@ -43,6 +45,7 @@ var (
 type appConfig struct {
 	LogLevel          logrus.Level
 	SnapRestSeconds   uint
+	SplitRestSeconds  uint
 	CommanderPoolSize uint
 
 	*UploadConfig
@@ -56,6 +59,9 @@ func (this *appConfig) checkAndFix() {
 	}
 	if this.SnapRestSeconds == 0 {
 		this.SnapRestSeconds = defaultAPP.SnapRestSeconds
+	}
+	if this.SplitRestSeconds == 0 {
+		this.SplitRestSeconds = defaultAPP.SplitRestSeconds
 	}
 	if this.CommanderPoolSize == 0 {
 		this.CommanderPoolSize = defaultAPP.CommanderPoolSize
@@ -86,6 +92,46 @@ type Show struct {
 	Parser       string
 	SaveDir      string
 	PostCmds     []*exec.Cmd
+	SplitRule    *SplitRule
+}
+
+type SplitRule struct {
+	FileSize int64
+
+	Duration       string
+	parsedDuration time.Duration
+}
+
+func (this *SplitRule) IsValid() bool {
+	if this == nil {
+		return false
+	}
+	if this.parsedDuration <= 0 && this.FileSize <= 0 {
+		return false
+	}
+	return true
+}
+
+func (this *SplitRule) Satisfy(startTime time.Time, out string) bool {
+	if !this.IsValid() {
+		return false
+	}
+
+	if this.parsedDuration > 0 {
+		if time.Since(startTime) >= this.parsedDuration {
+			return true
+		}
+	}
+
+	if this.FileSize > 0 {
+		if fi, err := os.Stat(out); err == nil {
+			if fi.Size() >= this.FileSize {
+				return true
+			}
+		}
+	}
+
+	return false
 }
 
 // fix parser
@@ -99,6 +145,16 @@ func (s *Show) checkAndFix() {
 		s.Parser = "streamlink"
 	default:
 		s.Parser = "flv"
+	}
+
+	if s.SplitRule != nil {
+		if s.SplitRule.Duration != "" {
+			var err error
+			s.SplitRule.parsedDuration, err = time.ParseDuration(s.SplitRule.Duration)
+			if err != nil {
+				l.Logger.Error(err)
+			}
+		}
 	}
 }
 
@@ -150,7 +206,10 @@ func init() {
 			l.Logger.WithField("err", err.Error()).
 				Fatal("load config file failed")
 		}
-		viper.Unmarshal(&APP)
+		if err := viper.Unmarshal(&APP); err != nil {
+			l.Logger.WithField("err", err.Error()).
+				Fatal("load config file failed")
+		}
 		APP.verify()
 
 		viper.OnConfigChange(func(e fsnotify.Event) {

@@ -37,6 +37,8 @@ type Recorder interface {
 	Stop()
 	StartTime() time.Time
 	Done() <-chan struct{}
+	Out() string
+	Show() engine.Show
 }
 
 type recorder struct {
@@ -46,6 +48,7 @@ type recorder struct {
 	startTime time.Time
 	parser    parser.Parser
 	done      chan struct{}
+	out       string
 }
 
 func NewRecorder(show engine.Show) (Recorder, error) {
@@ -88,6 +91,14 @@ func (r *recorder) Stop() {
 
 func (r *recorder) StartTime() time.Time {
 	return r.startTime
+}
+
+func (r *recorder) Out() string {
+	return r.out
+}
+
+func (r *recorder) Show() engine.Show {
+	return r.show
 }
 
 func (r *recorder) record() error {
@@ -181,6 +192,9 @@ func (r *recorder) record() error {
 		saveDir, _ = os.Getwd()
 	}
 	out = filepath.Join(saveDir, out)
+
+	r.startTime = time.Now()
+	r.out = out
 
 	err := r.parser.Parse(streamUrl, out)
 
