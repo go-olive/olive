@@ -7,7 +7,7 @@
 [![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/go-olive/olive)
 [![Github All Releases](https://img.shields.io/github/downloads/go-olive/olive/total.svg?style=for-the-badge)](https://github.com/go-olive/olive/releases)
 
-Olive is a powerful engine which monitors streamers status and automatically records when they're online. Helps you catch every live stream.
+Olive is a powerful engine which monitors streamers status and automatically records when they're online. Help you catch every live stream.
 
 ## Feature
 
@@ -36,15 +36,17 @@ $ olive -u https://www.huya.com/518512
 
 ## Usage
 
-Start **olive** by using config file, provide you more options.
+Start **olive** by using config file which provides you with more options.
 
-template file to reference [config.toml](src/tmpl/config.toml)
+template file to reference: [config.toml](src/tmpl/config.toml)
 
 ```sh
 $ olive -f /path/to/config.toml
 ```
 
 ### Minimal configuration
+
+With this minimal configs, you are already good to go.
 
 ```toml
 [[Shows]]
@@ -107,7 +109,7 @@ reference table
 | streamlink | third-party | YouTube/Twitch            |
 | yt-dlp     | third-party | YouTube                   |
 | ffmpeg     | third-party | Other than YouTube/Twitch |
-| Flv        | Native      | Other than YouTube/Twitch |
+| flv        | native      | Other than YouTube/Twitch |
 
 > You have to manually download the third-party `Parser` locally in order to use them.
 >
@@ -126,7 +128,7 @@ The commands will be executed automatically when the live ends , and if any comm
 * `olivebiliup`: If `UploadConfig` is configured, it will automatically upload to `bilibili` according to the configuration, if the upload fails it will execute `olivearchive`.
     * this requires to install [biliup-rs](https://github.com/ForgQi/biliup-rs) locally, and set `ExecPath` as the excutable filepath.
 * `oliveshell`: split normal shell commands as an array of strings, and put them in config `Args` .
-    * embed video file path as env variable. Can be used by `$FILE_PATH`
+    * **olive** has embedded video file path as an environment variable which can be referenced by `$FILE_PATH` .
 
 Config example:
 
@@ -159,7 +161,7 @@ Simulation:
 
 ### Split video files
 
-When any of the following condition is met, **olive** will start a new file.
+When any of the following conditions is met, **olive** will create a new file to record.
 
 * maximum video duration: `Duration`
     * A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m".
