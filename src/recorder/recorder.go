@@ -106,11 +106,17 @@ func (r *recorder) record() error {
 	defer func() {
 		fi, err := os.Stat(out)
 		if err != nil {
+			l.Logger.Errorf("rm small file failed(stat): %+v", err)
 			return
 		}
 		const tenMB = 1e7
 		if fi.Size() < tenMB {
-			os.Remove(out)
+			if err := os.Remove(out); err != nil {
+				l.Logger.WithFields(logrus.Fields{
+					"filename": fi.Name(),
+					"filesize": fi.Size(),
+				}).Errorf("rm small file failed: %+v", err)
+			}
 			return
 		}
 

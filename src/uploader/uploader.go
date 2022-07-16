@@ -44,6 +44,11 @@ func (u *uploader) proc() {
 		case <-u.stopChan:
 			return
 		default:
+			l.Logger.WithFields(logrus.Fields{
+				"postCmdPath": postCmd.Path,
+				"postCmdArgs": strings.Join(postCmd.Args, " "),
+				"filepath":    u.taskGroup.Filepath,
+			}).Info("cmd start running")
 			handler := DefaultTaskMux.MustGetHandler(postCmd.Path)
 			err := handler.Process(
 				&Task{
