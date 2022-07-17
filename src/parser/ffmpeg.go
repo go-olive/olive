@@ -3,7 +3,6 @@ package parser
 import (
 	"io"
 	"os/exec"
-	"path/filepath"
 	"sync"
 
 	l "github.com/go-olive/olive/src/log"
@@ -45,9 +44,6 @@ func (p *ffmpeg) Type() string {
 }
 
 func (p *ffmpeg) Parse(streamURL string, out string) (err error) {
-	ext := filepath.Ext(out)
-	out = out[0:len(out)-len(ext)] + ".flv"
-
 	l.Logger.WithFields(logrus.Fields{
 		// "streamURL": streamURL,
 		"out": out,

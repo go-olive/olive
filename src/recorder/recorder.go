@@ -199,6 +199,15 @@ func (r *recorder) record() error {
 	}
 	out = filepath.Join(saveDir, out)
 
+	switch r.parser.Type() {
+	case "yt-dlp":
+		ext := filepath.Ext(out)
+		out = out[0:len(out)-len(ext)] + ".mp4"
+	default:
+		ext := filepath.Ext(out)
+		out = out[0:len(out)-len(ext)] + ".flv"
+	}
+
 	r.startTime = time.Now()
 	r.out = out
 

@@ -3,7 +3,6 @@ package parser
 import (
 	"io"
 	"os/exec"
-	"path/filepath"
 	"sync"
 
 	l "github.com/go-olive/olive/src/log"
@@ -42,9 +41,6 @@ func (p *ytdlp) Type() string {
 
 // yt-dlp -f "bv[height=1080]+ba/b" https://www.youtube.com/watch?v=f6PdkucL1hk
 func (p *ytdlp) Parse(streamURL string, out string) (err error) {
-	ext := filepath.Ext(out)
-	out = out[0:len(out)-len(ext)] + ".mp4"
-
 	l.Logger.WithFields(logrus.Fields{
 		// "streamURL": streamURL,
 		"out": out,
