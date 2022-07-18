@@ -75,8 +75,8 @@ github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-olive/flv v0.0.0-20220608124255-065f61015270 h1:UgTTviMEsv9GieGUBZk/qi6c5vj4r0G4HtdJKCmour4=
 github.com/go-olive/flv v0.0.0-20220608124255-065f61015270/go.mod h1:7Rb0AU+4dKJNODHLz6PGeiVdOR/MUoG6Hhfing5zJx4=
-github.com/go-olive/tv v0.3.1-0.20220708163502-290da2b22ef5 h1:FZ2cbPsFOZIHYsNx4Qj+1NY9FZmoFdmihIb+EwWzvSw=
-github.com/go-olive/tv v0.3.1-0.20220708163502-290da2b22ef5/go.mod h1:YTMQgJAx4oJ8gYakGmKUXHZOVDS3URE+89s+tzG5B9U=
+github.com/go-olive/tv v0.3.1-0.20220718145111-8a32cb2ff953 h1:R5wuSVDquC2FoCys45WwulwoOuxUiEN0gVgz1UD0R8s=
+github.com/go-olive/tv v0.3.1-0.20220718145111-8a32cb2ff953/go.mod h1:YTMQgJAx4oJ8gYakGmKUXHZOVDS3URE+89s+tzG5B9U=
 github.com/gobwas/httphead v0.1.0 h1:exrUm0f4YX0L7EBwZHuCF4GDp8aJfVeBrlLQrs6NqWU=
 github.com/gobwas/httphead v0.1.0/go.mod h1:O/RXo79gxV8G+RqlR/otEwx4Q36zl9rqC5u12GKvMCM=
 github.com/gobwas/pool v0.2.1 h1:xfeeEhW7pwmX8nuLVlqbzVc7udMDrwetjEv+TZIz1og=

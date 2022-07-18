@@ -7,7 +7,7 @@
 [![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/go-olive/olive)
 [![Github All Releases](https://img.shields.io/github/downloads/go-olive/olive/total.svg?style=for-the-badge)](https://github.com/go-olive/olive/releases)
 
-Olive is a powerful engine which monitors streamers status and automatically records when they're online. Help you catch every live stream.
+**olive** is a powerful engine which monitors streamers status and automatically records when they're online. Help you catch every live stream.
 
 ## Feature
 
@@ -46,7 +46,7 @@ $ olive -f /path/to/config.toml
 
 ### Minimal configuration
 
-With this minimal configs, you are already good to go.
+With these minimal configs, you are already good to go.
 
 ```toml
 [[Shows]]
@@ -155,7 +155,7 @@ Path = "olivetrash"
 Simulation:
 
 1. Live ends.
-2. Execute the custom command `/bin/sh -c "echo $FILE_PATH" `.
+2. Execute the custom command `/bin/sh -c "echo '$FILE_PATH'" `.
 3. If the last command is executed successfully, execute the built-in command `olivebiliup `.
 4. If the last command is executed successfully, execute the built-in command `olivetrash `.
 
@@ -191,6 +191,7 @@ Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
 | douyin   |
 | huya     |
 | kuaishou |
+| lang     |
 | tiktok   |
 | twitch   |
 | youtube  |
@@ -236,7 +237,7 @@ FileSize = 1024000000
 Duration = "1h"
 [[Shows.PostCmds]]
 Path = "oliveshell"
-Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
+Args = ["/bin/sh", "-c", "echo '$FILE_PATH'"]
 [[Shows.PostCmds]]
 Path = "olivebiliup"
 [[Shows.PostCmds]]
