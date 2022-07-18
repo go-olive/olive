@@ -114,6 +114,10 @@ func OliveDefault(t *Task) error {
 	doneChan := make(chan struct{})
 	defer close(doneChan)
 
+	if t.Cmd == nil || len(t.Cmd.Args) == 0 {
+		return nil
+	}
+
 	cmd := exec.Command(t.Cmd.Args[0], t.Cmd.Args[1:]...)
 
 	envFilepath := "FILE_PATH=" + t.Filepath
