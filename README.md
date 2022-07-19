@@ -7,6 +7,8 @@
 [![Sourcegraph](https://img.shields.io/badge/view%20on-Sourcegraph-brightgreen.svg?style=for-the-badge&logo=sourcegraph)](https://sourcegraph.com/github.com/go-olive/olive)
 [![Github All Releases](https://img.shields.io/github/downloads/go-olive/olive/total.svg?style=for-the-badge)](https://github.com/go-olive/olive/releases)
 
+[简体中文](README_ZH.md)
+
 **olive** is a powerful engine which monitors streamers status and automatically records when they're online. Help you catch every live stream.
 
 ## Feature
@@ -145,7 +147,7 @@ StreamerName = "test"
 OutTmpl = "[test][{{ now | date \"2006-01-02 15-04-05\"}}].flv"
 [[Shows.PostCmds]]
 Path = "oliveshell"
-Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
+Args = ["/bin/sh", "-c", "echo '$FILE_PATH'"]
 [[Shows.PostCmds]]
 Path = "olivebiliup"
 [[Shows.PostCmds]]
