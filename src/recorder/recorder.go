@@ -12,24 +12,19 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/Masterminds/sprig"
 	"github.com/go-dora/filenamify"
 	"github.com/go-olive/olive/src/engine"
 	"github.com/go-olive/olive/src/enum"
 	l "github.com/go-olive/olive/src/log"
 	"github.com/go-olive/olive/src/parser"
 	"github.com/go-olive/olive/src/uploader"
+	"github.com/go-olive/olive/src/util"
 	"github.com/sirupsen/logrus"
 )
 
 var (
-	nameFuncMap = func() template.FuncMap {
-		m := sprig.TxtFuncMap()
-		return m
-	}()
-
-	defaultOutTmpl = template.Must(template.New("filename").Funcs(nameFuncMap).
-			Parse(`[{{ .StreamerName }}][{{ .RoomName }}][{{ now | date "2006-01-02 15-04-05"}}].flv`))
+	defaultOutTmpl = template.Must(template.New("filename").Funcs(util.NameFuncMap).
+		Parse(`[{{ .StreamerName }}][{{ .RoomName }}][{{ now | date "2006-01-02 15-04-05"}}].flv`))
 )
 
 type Recorder interface {
@@ -159,7 +154,7 @@ func (r *recorder) record() error {
 
 	tmpl := defaultOutTmpl
 	if r.show.GetOutTmpl() != "" {
-		_tmpl, err := template.New("user_defined_filename").Funcs(nameFuncMap).Parse(r.show.GetOutTmpl())
+		_tmpl, err := template.New("user_defined_filename").Funcs(util.NameFuncMap).Parse(r.show.GetOutTmpl())
 		if err == nil {
 			tmpl = _tmpl
 		} else {
