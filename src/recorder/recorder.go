@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 	"sync/atomic"
 	"text/template"
 	"time"
@@ -179,19 +178,15 @@ func (r *recorder) record() error {
 		"rn": roomName,
 	}).Info("record start")
 
-	saveDir := strings.TrimSpace(r.show.GetSaveDir())
-	if saveDir != "" {
-		err := os.MkdirAll(saveDir, os.ModePerm)
-		if err != nil {
-			l.Logger.WithFields(logrus.Fields{
-				"pf": r.show.GetPlatform(),
-				"id": r.show.GetRoomID(),
-			}).Errorf("mkdir failed: %s", err.Error())
-			return nil
-		}
-	} else {
-		saveDir, _ = os.Getwd()
+	saveDir := r.show.GetSaveDir()
+	if err := os.MkdirAll(saveDir, os.ModePerm); err != nil {
+		l.Logger.WithFields(logrus.Fields{
+			"pf": r.show.GetPlatform(),
+			"id": r.show.GetRoomID(),
+		}).Errorf("mkdir failed: %s", err.Error())
+		return nil
 	}
+
 	out = filepath.Join(saveDir, out)
 
 	switch r.parser.Type() {

@@ -1,17 +1,23 @@
 package engine
 
 import (
+	"bytes"
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
+	"strings"
+	"text/template"
 	"time"
 
 	"github.com/go-olive/olive/src/config"
 	"github.com/go-olive/olive/src/dispatcher"
 	"github.com/go-olive/olive/src/enum"
+	l "github.com/go-olive/olive/src/log"
 	"github.com/go-olive/olive/src/parser"
+	"github.com/go-olive/olive/src/util"
 
 	"github.com/go-olive/tv"
 )
@@ -152,7 +158,27 @@ func (s *show) GetParser() string {
 }
 
 func (s *show) GetSaveDir() string {
-	return s.SaveDir
+	defaultSaveDir, _ := os.Getwd()
+	saveDir := strings.TrimSpace(s.SaveDir)
+
+	if saveDir == "" {
+		return defaultSaveDir
+	}
+
+	tmpl, err := template.New("user_defined_savedir_tmpl").Funcs(util.NameFuncMap).Parse(saveDir)
+	if err != nil {
+		l.Logger.Error(err)
+		return defaultSaveDir
+	}
+	buf := new(bytes.Buffer)
+	if err := tmpl.Execute(buf, nil); err != nil {
+		l.Logger.Error(err)
+		return defaultSaveDir
+	} else {
+		saveDir = buf.String()
+	}
+
+	return saveDir
 }
 
 func (s *show) GetPostCmds() []*exec.Cmd {
