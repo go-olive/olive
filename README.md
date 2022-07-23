@@ -11,6 +11,8 @@
 
 **olive** is a powerful engine which monitors streamers status and automatically records when they're online. Help you catch every live stream.
 
+If you have new features or find bugs, please go to the [issues](https://github.com/go-olive/olive/issues) section.<br/>If you get some questions or ideas, please go to the [discussions](https://github.com/go-olive/olive/discussions) section.
+
 ## Feature
 
 * Small
@@ -147,7 +149,7 @@ StreamerName = "test"
 OutTmpl = "[test][{{ now | date \"2006-01-02 15-04-05\"}}].flv"
 [[Shows.PostCmds]]
 Path = "oliveshell"
-Args = ["/bin/sh", "-c", "echo '$FILE_PATH'"]
+Args = ["/bin/zsh", "-c", "echo $FILE_PATH"]
 [[Shows.PostCmds]]
 Path = "olivebiliup"
 [[Shows.PostCmds]]
@@ -157,7 +159,7 @@ Path = "olivetrash"
 Simulation:
 
 1. Live ends.
-2. Execute the custom command `/bin/sh -c "echo '$FILE_PATH'" `.
+2. Execute the custom command `/bin/sh -c "echo $FILE_PATH" `.
 3. If the last command is executed successfully, execute the built-in command `olivebiliup `.
 4. If the last command is executed successfully, execute the built-in command `olivetrash `.
 
@@ -198,7 +200,9 @@ Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
 | twitch   |
 | youtube  |
 
-**olive** relies on **[olivetv](https://github.com/go-olive/tv)** to support above sites. If yours is not on the list above, welcome to submit an issue or a pr at **[olivetv](https://github.com/go-olive/tv)**.
+**olive** relies on **[olivetv](https://github.com/go-olive/tv)** to support above sites.
+
+If yours is not on the list above, welcome to leave your site at [discussion](https://github.com/go-olive/olive/discussions/50), or you can create a pr at **[olivetv](https://github.com/go-olive/tv)**.
 
 
 ## Config.toml
@@ -239,7 +243,7 @@ FileSize = 1024000000
 Duration = "1h"
 [[Shows.PostCmds]]
 Path = "oliveshell"
-Args = ["/bin/sh", "-c", "echo '$FILE_PATH'"]
+Args = ["/bin/zsh", "-c", "echo $FILE_PATH"]
 [[Shows.PostCmds]]
 Path = "olivebiliup"
 [[Shows.PostCmds]]

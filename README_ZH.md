@@ -9,6 +9,8 @@
 
 **olive** 是一款强大的直播录制引擎。它会时刻监控着主播的直播状态，并在主播上线时自动开启录制。帮助您捕捉到每一场直播内容。
 
+如果您有新的功能特性要支持或发现了bug，请去往 [issues](https://github.com/go-olive/olive/issues) 板块。<br/>如果您有什么问题或想法，请去往 [discussions](https://github.com/go-olive/olive/discussions) 板块。
+
 ## 主要特性
 
 * 小巧
@@ -130,7 +132,7 @@ Parser = "ffmpeg"
 - `olivebiliup`: 若有配置 `UploadConfig`，则会根据配置自动上传至哔哩哔哩，若上传失败会执行`olivearchive`。
     - 这条命令需要本地安装好 [biliup-rs](https://github.com/ForgQi/biliup-rs) ，并将 `UploadConfig` 中的 `ExecPath` 设置为可执行文件的路径。
 - `oliveshell`: 将常规终端指令切分成字符串数组，并配置到 `Args` 中。
-    - **olive** 内置了文件路径作为环境变量，并可以通过 `$FILE_PATH` 获取。注意环境变量只有在 shell 环境中才会正确解析，如 `/bin/sh -c "echo '$FILE_PATH'"` ，只执行 `echo '$FILE_PATH'` 则很可能获取不到。
+    - **olive** 内置了文件路径作为环境变量，并可以通过 `$FILE_PATH` 获取。注意环境变量只有在 shell 环境中才会正确解析，如 `/bin/zsh -c "echo $FILE_PATH"` ，只执行 `echo $FILE_PATH` 则很可能获取不到路径信息。
 
 配置文件样例
 
@@ -147,7 +149,7 @@ StreamerName = "test"
 OutTmpl = "[test][{{ now | date \"2006-01-02 15-04-05\"}}].flv"
 [[Shows.PostCmds]]
 Path = "oliveshell"
-Args = ["/bin/sh", "-c", "echo '$FILE_PATH'"]
+Args = ["/bin/zsh", "-c", "echo $FILE_PATH"]
 [[Shows.PostCmds]]
 Path = "olivebiliup"
 [[Shows.PostCmds]]
@@ -157,7 +159,7 @@ Path = "olivetrash"
 模拟执行配置文件
 
 1. 录制结束
-2. 执行自定义命令`/bin/sh -c "echo '$FILE_PATH'"`
+2. 执行自定义命令`/bin/sh -c "echo $FILE_PATH"`
 3. 若上条命令执行成功，执行内置命令`olivebiliup`
 4. 若上条命令执行成功，执行内置命令`olivetrash`
 
@@ -198,7 +200,9 @@ Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
 | twitch   |
 | youtube  |
 
-**olive** 依赖 **[olivetv](https://github.com/go-olive/tv)** 来支持上述网站的直播录制。如果您的不在上述列表中，欢迎在 **[olivetv](https://github.com/go-olive/tv)** 中提交 issue 或 pr 。
+**olive** 依赖 **[olivetv](https://github.com/go-olive/tv)** 来支持上述网站的直播录制。
+
+如果您的不在上述列表中，欢迎在 [discussion](https://github.com/go-olive/olive/discussions/50) 中留下评论或在 **[olivetv](https://github.com/go-olive/tv)** 中提交 pr 。
 
 
 ## Config.toml
@@ -239,7 +243,7 @@ FileSize = 1024000000
 Duration = "1h"
 [[Shows.PostCmds]]
 Path = "oliveshell"
-Args = ["/bin/sh", "-c", "echo '$FILE_PATH'"]
+Args = ["/bin/zsh", "-c", "echo $FILE_PATH"]
 [[Shows.PostCmds]]
 Path = "olivebiliup"
 [[Shows.PostCmds]]
