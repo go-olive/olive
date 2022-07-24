@@ -141,7 +141,8 @@ func (s *Show) checkAndFix() {
 	}
 	switch s.Platform {
 	case "youtube",
-		"twitch":
+		"twitch",
+		"streamlink":
 		s.Parser = "streamlink"
 	default:
 		s.Parser = "flv"
