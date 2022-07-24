@@ -15,20 +15,20 @@ If you have new features or find bugs, please go to the [issues](https://github.
 
 ## Feature
 
-* Small
-* Easy-to-use
-* Efficient
-* Extensible
-* Customizable
-* Cross-platform
+- Small
+- Easy-to-use
+- Efficient
+- Extensible
+- Customizable
+- Cross-platform
 
 ## Installation
 
-* build from source
+- build from source
 
-    `go install github.com/go-olive/olive/src/cmd/olive@latest`
+  `go install github.com/go-olive/olive/src/cmd/olive@latest`
 
-* download from [**releases**](https://github.com/go-olive/olive/releases)
+- download from [**releases**](https://github.com/go-olive/olive/releases)
 
 ## Quickstart
 
@@ -66,11 +66,11 @@ StreamerName = "old-tomato"
 
 Add config `OutTmpl`
 
-* Date: `{{ now | date \"2006-01-02 15-04-05\"}}`
+- Date: `{{ now | date \"2006-01-02 15-04-05\"}}`
 
-* Streame Name: `{{ .StreamerName }}`
+- Streame Name: `{{ .StreamerName }}`
 
-* Stream Title: `{{ .RoomName }}`
+- Stream Title: `{{ .RoomName }}`
 
 ```toml
 [[Shows]]
@@ -127,12 +127,12 @@ The commands will be executed automatically when the live ends , and if any comm
 
 **olive** provides several out-of-box commands that have been implemented internally. (set config `Path` under `[[Shows.PostCmds]]`)
 
-* `olivearchive`: Move the file to the archive folder under the current directory.
-* `olivetrash`: Delete the file (unrecoverable).
-* `olivebiliup`: If `UploadConfig` is configured, it will automatically upload to `bilibili` according to the configuration, if the upload fails it will execute `olivearchive`.
-    * this requires to install [biliup-rs](https://github.com/ForgQi/biliup-rs) locally, and set `ExecPath` as the excutable filepath.
-* `oliveshell`: split normal shell commands as an array of strings, and put them in config `Args` .
-    * **olive** has embedded video file path as an environment variable which can be referenced by `$FILE_PATH` .
+- `olivearchive`: Move the file to the archive folder under the current directory.
+- `olivetrash`: Delete the file (unrecoverable).
+- `olivebiliup`: If `UploadConfig` is configured, it will automatically upload to `bilibili` according to the configuration, if the upload fails it will execute `olivearchive`.
+  - this requires to install [biliup-rs](https://github.com/ForgQi/biliup-rs) locally, and set `ExecPath` as the excutable filepath.
+- `oliveshell`: split normal shell commands as an array of strings, and put them in config `Args` .
+  - **olive** has embedded video file path as an environment variable which can be referenced by `$FILE_PATH` .
 
 Config example:
 
@@ -167,10 +167,10 @@ Simulation:
 
 When any of the following conditions is met, **olive** will create a new file to record.
 
-* maximum video duration: `Duration`
-    * A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m".
-    * Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
-* maximum video filesize (byte): `Filesize`
+- maximum video duration: `Duration`
+  - A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m".
+  - Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+- maximum video filesize (byte): `Filesize`
 
 ```toml
 [[Shows]]
@@ -189,6 +189,8 @@ Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
 
 ## Supported platforms
 
+### native
+
 | Platform |
 | -------- |
 | bilibili |
@@ -204,6 +206,31 @@ Args = ["/bin/sh", "-c", "echo $FILE_PATH"]
 
 If yours is not on the list above, welcome to leave your site at [discussion](https://github.com/go-olive/olive/discussions/50), or you can create a pr at **[olivetv](https://github.com/go-olive/tv)**.
 
+### streamlink
+
+Since streamlink is so powerful and supportive of many more sites, there's no need to reinvent the wheel. I'm using streamlink as a plugin in **olive**. As long as the site is supported in streamlink, you can use it in **olive** as well.
+
+Examples are as follows:
+
+```toml
+[[Shows]]
+Platform = "streamlink"
+RoomID = "https://twitcasting.tv/c:aiueo033000"
+StreamerName = "c:aiueo033000"
+OutTmpl = "[{{ .StreamerName }}][{{ now | date \"2006-01-02 15-04-05\"}}]"
+
+[[Shows]]
+Platform = "streamlink"
+RoomID = "https://live.nicovideo.jp/watch/lv337855989"
+StreamerName = "ラムミ"
+OutTmpl = "[{{ .StreamerName }}][{{ now | date \"2006-01-02 15-04-05\"}}]"
+
+[[Shows]]
+Platform = "streamlink"
+RoomID = "https://play.afreecatv.com/030b1004/241795118"
+StreamerName = "덩이￼"
+OutTmpl = "[{{ .StreamerName }}][{{ now | date \"2006-01-02 15-04-05\"}}]"
+```
 
 ## Config.toml
 
@@ -252,10 +279,10 @@ Path = "olivetrash"
 
 ## RoadMap
 
-* Add docker image
-* Add mock test
-* Add web ui
-* Add prometheus and grafana
+- Add docker image
+- Add mock test
+- Add web ui
+- Add prometheus and grafana
 
 ## License
 
