@@ -53,9 +53,27 @@ type appConfig struct {
 	*UploadConfig
 	*PlatformConfig
 	Shows []*Show
+	Envs  []*Env
+}
+
+type Env struct {
+	Key   string
+	Value string
 }
 
 func (this *appConfig) checkAndFix() {
+	for _, env := range this.Envs {
+		if env == nil {
+			continue
+		}
+		if err := os.Setenv(env.Key, env.Value); err != nil {
+			l.Logger.WithFields(logrus.Fields{
+				"key":   env.Key,
+				"value": env.Value,
+			}).Error(err)
+		}
+	}
+
 	if this.LogLevel == 0 {
 		this.LogLevel = defaultAPP.LogLevel
 	}
