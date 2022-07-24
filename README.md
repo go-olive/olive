@@ -237,6 +237,13 @@ OutTmpl = "[{{ .StreamerName }}][{{ now | date \"2006-01-02 15-04-05\"}}]"
 A config file with every feature involved.
 
 ```toml
+[[Envs]]
+Key = "https_proxy"
+Value = "http://127.0.0.1:7890"
+[[Envs]]
+Key = "http_proxy"
+Value = "http://127.0.0.1:7890"
+
 LogLevel = 5
 SnapRestSeconds = 15
 SplitRestSeconds = 60
