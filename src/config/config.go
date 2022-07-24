@@ -4,9 +4,11 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
@@ -33,7 +35,7 @@ var (
 
 	appCfgFilePath string
 	version        bool
-	url            string
+	roomUrl        string
 	cookie         string
 	usage          = func() {
 		fmt.Printf("Powered by go-olive/olive %s\n", AppVersion)
@@ -141,7 +143,8 @@ func (s *Show) checkAndFix() {
 	}
 	switch s.Platform {
 	case "youtube",
-		"twitch":
+		"twitch",
+		"streamlink":
 		s.Parser = "streamlink"
 	default:
 		s.Parser = "flv"
@@ -173,7 +176,7 @@ func init() {
 	flag.BoolVar(&version, "v", version, "print olive version")
 	flag.StringVar(&appCfgFilePath, "f", appCfgFilePath, "set config.toml filepath")
 
-	flag.StringVar(&url, "u", url, "room url")
+	flag.StringVar(&roomUrl, "u", roomUrl, "room url")
 	flag.StringVar(&cookie, "c", "", "http cookie")
 
 	flag.Parse()
@@ -181,19 +184,8 @@ func init() {
 	if version {
 		fmt.Println(AppVersion)
 		os.Exit(0)
-	} else if url != "" {
-		t, err := tv.NewWithUrl(url, tv.SetCookie(cookie))
-		if err != nil {
-			l.Logger.Fatal(err)
-		}
-		site, _ := tv.Sniff(t.SiteID)
-		APP.Shows = []*Show{
-			{
-				StreamerName: site.Name(),
-				Platform:     t.SiteID,
-				RoomID:       t.RoomID,
-			},
-		}
+	} else if roomUrl != "" {
+		APP.genShowsFromRoomUrl(roomUrl)
 		APP.verify()
 	} else {
 		if appCfgFilePath == "" {
@@ -247,5 +239,42 @@ func (this *appConfig) verify() {
 		if _, err := os.Stat(cookiesFilePath); errors.Is(err, os.ErrNotExist) {
 			l.Logger.Fatal("biliup: please put cookies.json file at the current path")
 		}
+	}
+}
+
+func (this *appConfig) genShowsFromRoomUrl(roomUrl string) {
+	t, err := tv.NewWithUrl(roomUrl, tv.SetCookie(cookie))
+	if err == nil {
+		site, _ := tv.Sniff(t.SiteID)
+		this.Shows = []*Show{
+			{
+				StreamerName: site.Name(),
+				Platform:     t.SiteID,
+				RoomID:       t.RoomID,
+			},
+		}
+		return
+	}
+
+	l.Logger.Debug(err)
+	l.Logger.Info("streamlink dials...")
+	u, err := url.Parse(roomUrl)
+	if err != nil {
+		l.Logger.Fatal(err)
+	}
+	streamerName := u.Hostname()
+	hostParts := strings.Split(streamerName, ".")
+	if len(hostParts) == 2 {
+		streamerName = hostParts[0]
+	} else if len(hostParts) > 2 {
+		streamerName = hostParts[1]
+	}
+	this.Shows = []*Show{
+		{
+			StreamerName: streamerName,
+			Platform:     "streamlink",
+			RoomID:       roomUrl,
+			OutTmpl:      "[{{ .StreamerName }}][{{ now | date \"2006-01-02 15-04-05\"}}]",
+		},
 	}
 }
