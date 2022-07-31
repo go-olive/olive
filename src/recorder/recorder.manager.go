@@ -7,6 +7,8 @@ import (
 
 	"github.com/go-olive/olive/src/config"
 	"github.com/go-olive/olive/src/engine"
+	l "github.com/go-olive/olive/src/log"
+	"github.com/sirupsen/logrus"
 )
 
 type Manager struct {
@@ -63,8 +65,8 @@ type Splitter interface {
 
 func (m *Manager) Split() {
 	isValid := false
-	for _, r := range m.savers {
-		if r.Show().GetSplitRule().IsValid() {
+	for _, r := range config.APP.Shows {
+		if r.SplitRule.IsValid() {
 			isValid = true
 			break
 		}
@@ -72,6 +74,8 @@ func (m *Manager) Split() {
 	if !isValid {
 		return
 	}
+
+	l.Logger.Info("split program starts...")
 
 	t := time.NewTicker(time.Second * time.Duration(config.APP.SplitRestSeconds))
 	defer t.Stop()
@@ -83,6 +87,10 @@ func (m *Manager) Split() {
 		case <-t.C:
 			for _, r := range m.savers {
 				if r.Show().SatisfySplitRule(r.StartTime(), r.Out()) {
+					l.Logger.WithFields(logrus.Fields{
+						"pf": r.Show().GetPlatform(),
+						"id": r.Show().GetRoomID(),
+					}).Info("restart by split program")
 					r.Show().RestartRecorder()
 				}
 			}

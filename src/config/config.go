@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	AppVersion string
+	AppVersion = "v0.3.3"
 	APP        = &appConfig{}
 	defaultAPP = &appConfig{
 		LogLevel:          logrus.DebugLevel,
@@ -154,20 +154,20 @@ func (this *SplitRule) Satisfy(startTime time.Time, out string) bool {
 	return false
 }
 
-// fix parser
 func (s *Show) checkAndFix() {
-	if s.Parser != "" {
-		return
-	}
-	switch s.Platform {
-	case "youtube",
-		"twitch",
-		"streamlink":
-		s.Parser = "streamlink"
-	default:
-		s.Parser = "flv"
+	// fix parser
+	if s.Parser == "" {
+		switch s.Platform {
+		case "youtube",
+			"twitch",
+			"streamlink":
+			s.Parser = "streamlink"
+		default:
+			s.Parser = "flv"
+		}
 	}
 
+	// fix split rule
 	if s.SplitRule != nil {
 		if s.SplitRule.Duration != "" {
 			var err error
